@@ -1,4 +1,6 @@
 import pytest
+import os
+import json
 from datetime import date, timedelta
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -6,16 +8,12 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
-# Test Data
-formTestData = [
-    ("Jerry", "Seinfeld", "Comedian", "Grad", "Male", "4", "+40"),
-    ("Cosmos", "Kramer", "Schmooch", "HighSchool", "NotSay", "1", "0"),
-    ("George", "Costanza", "Yankees Executive", "College", "Male", "2", "+20"),
-    ("Elaine", "Benes", "Copy Editor", "Grad", "Female", "1", "-12"),
-    ("Estelle", "Costanza", "Mom", "HighSchool", "Female", "4", "+42"),
-    ("Francis", "Newman", "Postman", "HighSchool", "NotSay", "3", "-24"),
-    ("Helen", "Seinfeld", "Mom", "Grad", "Female", "2", "-2"),
-]
+# Function to Read Data from JSON file
+def load_test_data():
+    file_path = os.path.join(os.path.dirname(__file__), "../data/form_test_data.json")
+    with open(file_path, "r", encoding="utf-8") as file:
+        data = json.load(file)
+    return [(d["first_name"], d["last_name"], d["job"], d["education"], d["gender"], d["experience"], d["score"]) for d in data]
 
 # Helper Function to Calculate Date
 def findDate(dateValue):
@@ -36,7 +34,7 @@ def findDate(dateValue):
     return new_date.strftime("%m/%d/%Y")
 
 # Pytest Fixture to Set Up and Tear Down WebDriver
-# @pytest.fixture(scope="function")
+# @pytest.fixture(scope="function") #Launch a new browser session for each data test iteration
 @pytest.fixture(scope="session") #Reuse the same browser session for all data test iterations
 def browser():
     driver = webdriver.Firefox()
@@ -47,7 +45,7 @@ def browser():
 # Parametrize Test Function
 @pytest.mark.parametrize(
     "first_name, last_name, job, education, gender, experience, dateAdjustment",
-    formTestData
+    load_test_data()
 )
 def test_form_submission(browser, first_name, last_name, job, education, gender, experience, dateAdjustment):
     """Fills out and submits the form, then verifies success message."""

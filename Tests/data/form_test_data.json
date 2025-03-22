@@ -1,0 +1,65 @@
+[
+    {
+        "first_name": "Jerry",
+        "last_name": "Seinfeld",
+        "job": "Comedian",
+        "education": "Grad",
+        "gender": "Male",
+        "experience": "4",
+        "score": "+40"
+    },
+    {
+        "first_name": "Cosmos",
+        "last_name": "Kramer",
+        "job": "Schmooch",
+        "education": "HighSchool",
+        "gender": "NotSay",
+        "experience": "1",
+        "score": "0"
+    },
+    {
+        "first_name": "George",
+        "last_name": "Costanza",
+        "job": "Yankees Executive",
+        "education": "College",
+        "gender": "Male",
+        "experience": "2",
+        "score": "+20"
+    },
+    {
+        "first_name": "Elaine",
+        "last_name": "Benes",
+        "job": "Copy Editor",
+        "education": "Grad",
+        "gender": "Female",
+        "experience": "1",
+        "score": "-12"
+    },
+    {
+        "first_name": "Estelle",
+        "last_name": "Costanza",
+        "job": "Mom",
+        "education": "HighSchool",
+        "gender": "Female",
+        "experience": "4",
+        "score": "+42"
+    },
+    {
+        "first_name": "Francis",
+        "last_name": "Newman",
+        "job": "Postman",
+        "education": "HighSchool",
+        "gender": "NotSay",
+        "experience": "3",
+        "score": "-24"
+    },
+    {
+        "first_name": "Helen",
+        "last_name": "Seinfeld",
+        "job": "Mom",
+        "education": "Grad",
+        "gender": "Female",
+        "experience": "2",
+        "score": "-2"
+    }
+]

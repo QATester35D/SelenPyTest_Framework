@@ -6,6 +6,8 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
+pytestmark = pytest.mark.regression #Module-Level Marking - Applies to all tests in the module (test file)
+
 # Test Data
 formTestData = [
     ("Jerry", "Seinfeld", "Comedian", "Grad", "Male", "4", "+40"),

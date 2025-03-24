@@ -1,0 +1,3 @@
+Browser:  edge
+Header:  Selenium Playground
+Close Browser

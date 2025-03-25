@@ -7,6 +7,7 @@ class LoginPage(BasePage):
     password_field = (By.ID, "input-password")
     login_button = (By.XPATH, "//div[@id='content']//input[@value='Login']")
     warning_message = (By.CSS_SELECTOR, "#account-login .alert-danger")
+    new_customer_message = (By.CLASS_NAME, "card-body")
 
     def __init__(self, driver):
         super().__init__(driver)
@@ -28,3 +29,9 @@ class LoginPage(BasePage):
 
     def get_warning_message(self):
         return self.get_text(self.warning_message)
+    
+    def get_new_customer_message(self):
+        div_element=self.find(*self.new_customer_message)
+        div_text = div_element.text
+        elements=div_text.split("\n")
+        return elements

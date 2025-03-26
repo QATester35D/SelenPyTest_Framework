@@ -1,6 +1,7 @@
 from QATests.pages.base_page import BasePage
 from QATests.pages.my_account_page import MyAccountPage
 from QATests.utilities.locators import ChangePasswordLocatorFields
+from selenium.webdriver.common.by import By
 
 class ChangePasswordPage(BasePage):
 
@@ -16,3 +17,4 @@ class ChangePasswordPage(BasePage):
     
     def get_confirmation_error_message(self):
         return self.get_text(self.locate.confirmation_error_message)
+    

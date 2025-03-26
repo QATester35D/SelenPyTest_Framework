@@ -32,3 +32,15 @@ class BasePage:
     # Below method allows us to click the page, check if page is visible, & more actions
     def page(sef, page_name):
         return By.XPATH, "//aside[@id='column-right']//a[text()=' "+ page_name +"']"
+    
+    def select(self, locator, value):
+        self.find(*locator).click()
+        self.find(*locator).select_by_visible_text(value)
+
+    def select_radio_button(self, locator, value):
+        group_by, group_name = locator
+        radio_button_locator = (By.XPATH, f"//input[@{group_by}='{group_name}'][@value='{value}']")
+        radio_button = self.driver.find_element(*radio_button_locator)
+        
+        if not radio_button.is_selected():
+            radio_button.click()

@@ -1,13 +1,14 @@
 from QATests.pages.login_page import LoginPage
 from QATests.tests.base_test import BaseTest
 from QATests.utilities.test_data import TestData
-from selenium.webdriver.common.by import By
-
 
 class TestLogin(BaseTest):
 
     def test_valid_credentials(self):
         login_page=LoginPage(self.driver)
+        mainMessage=login_page.get_website_main_message()
+        # track_requirement("WE2025R1-3 - ReqId: 1")
+        assert mainMessage == "This is a dummy website for Web Automation Testing"
         elements=login_page.get_new_customer_message()
         typeOfCustomer=elements[0]
         accountAction=elements[1]

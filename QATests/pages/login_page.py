@@ -1,25 +1,21 @@
-from selenium.webdriver.common.by import By
 from QATests.pages.base_page import BasePage
 from QATests.pages.my_account_page import MyAccountPage
+from QATests.utilities.locators import LoginPageLocatorFields
 
 class LoginPage(BasePage):
-    email_address_field = (By.ID, "input-email")
-    password_field = (By.ID, "input-password")
-    login_button = (By.XPATH, "//div[@id='content']//input[@value='Login']")
-    warning_message = (By.CSS_SELECTOR, "#account-login .alert-danger")
-    new_customer_message = (By.CLASS_NAME, "card-body")
 
     def __init__(self, driver):
+        self.locate = LoginPageLocatorFields
         super().__init__(driver)
 
     def set_email_address(self, email_address):
-        self.set(self.email_address_field, email_address)
+        self.set(self.locate.email_address_field, email_address)
 
     def set_password(self, password):
-        self.set(self.password_field, password)
+        self.set(self.locate.password_field, password)
 
     def click_login_button(self):
-        self.click(self.login_button)
+        self.click(self.locate.login_button)
         return MyAccountPage(self.driver)
 
     def log_into_application(self, email, password):
@@ -28,10 +24,13 @@ class LoginPage(BasePage):
         return self.click_login_button()
 
     def get_warning_message(self):
-        return self.get_text(self.warning_message)
+        return self.get_text(self.locate.warning_message)
     
     def get_new_customer_message(self):
-        div_element=self.find(*self.new_customer_message)
+        div_element=self.find(*self.locate.new_customer_message)
         div_text = div_element.text
         elements=div_text.split("\n")
         return elements
+    
+    def get_website_main_message(self):
+        return self.get_text(self.locate.website_main_message)

@@ -9,6 +9,9 @@ class AddAddressPage(BasePage):
         self.locate = AddAddressLocatorFields
         super().__init__(driver)
 
+    def click_new_address_button(self):
+        self.click(self.locate.new_address_button)
+
     def set_first_name(self, first_name):
         self.set(self.locate.firstname_field, first_name)
 
@@ -38,4 +41,14 @@ class AddAddressPage(BasePage):
     
     def select_default_address(self, value):
         self.select_radio_button(self.locate.default_address, value)
+    
+    def click_continue_button(self):
+        self.click(self.locate.continue_button)
+        return MyAccountPage(self.driver)
+    
+    def get_page_title(self):
+        return self.get_page_title_text(self.locate.address_book_page_titles)
+    
+    def get_success_message(self):
+        return self.get_text(self.locate.address_success_message)
     

@@ -15,6 +15,7 @@ class LoginPageLocatorFields:
     website_main_message = (By.ID, "entry_217838")
 
 class AddAddressLocatorFields:
+    address_book_page_titles = (By.XPATH, "//div[@id='content']//h1")
     firstname_field = (By.ID, "input-firstname")
     lastname_field = (By.ID, "input-lastname")
     company_field = (By.ID, "input-company")
@@ -26,5 +27,7 @@ class AddAddressLocatorFields:
     region_state_field = (By.ID, "input-zone")
     # default_address_yes = (By.XPATH, "//input[@name='default'][@value='1']")
     default_address = (By.NAME, "default")
+    new_address_button = (By.XPATH, "//a[contains(@class, 'btn-primary') and text()='New Address']")
     continue_button = (By.XPATH, "//div[@id='content']//input[@value='Continue']")
     success_message = (By.CSS_SELECTOR, "#content .alert-success")
+    address_success_message = (By.XPATH, "//div[@class='alert alert-success alert-dismissible']")

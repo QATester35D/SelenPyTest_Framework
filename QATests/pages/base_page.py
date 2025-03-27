@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select, WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class BasePage:
     """
@@ -21,6 +23,10 @@ class BasePage:
     def get_text(self, locator):
         return self.find(*locator).text
     
+    def get_page_title_text(self, locator):
+        element = self.find(*locator)
+        return element.text
+
     def get_title(self):
         return self.driver.title
     
@@ -33,9 +39,16 @@ class BasePage:
     def page(sef, page_name):
         return By.XPATH, "//aside[@id='column-right']//a[text()=' "+ page_name +"']"
     
+    # def select(self, locator, value):
+    #     self.find(*locator).click()
+    #     self.find(*locator).select_by_visible_text(value)
+
     def select(self, locator, value):
-        self.find(*locator).click()
-        self.find(*locator).select_by_visible_text(value)
+        # wait=WebDriverWait(self, 10)
+        # element=wait.until(EC.element_to_be_clickable(locator))
+        dropdown = Select(self.find(*locator))
+        # dropdown = Select(element)
+        dropdown.select_by_visible_text(value)
 
     def select_radio_button(self, locator, value):
         group_by, group_name = locator

@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.support import expected_conditions as EC
+import time
 
 class BasePage:
     """
@@ -11,6 +12,9 @@ class BasePage:
 
     def find(self, *locator):
         return self.driver.find_element(*locator)
+    
+    def find_elements(self, *locator):
+        return self.driver.find_elements(*locator)
     
     def click(self, locator):
         self.find(*locator).click()
@@ -44,10 +48,8 @@ class BasePage:
     #     self.find(*locator).select_by_visible_text(value)
 
     def select(self, locator, value):
-        # wait=WebDriverWait(self, 10)
-        # element=wait.until(EC.element_to_be_clickable(locator))
+        time.sleep(1) # wait_until does not work: element=wait.until(EC.visibility_of_element_located(locator))
         dropdown = Select(self.find(*locator))
-        # dropdown = Select(element)
         dropdown.select_by_visible_text(value)
 
     def select_radio_button(self, locator, value):

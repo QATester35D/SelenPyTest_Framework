@@ -52,3 +52,20 @@ class AddAddressPage(BasePage):
     def get_success_message(self):
         return self.get_text(self.locate.address_success_message)
     
+    def get_addresses_from_table(self):
+        rows = self.find_elements(*self.locate.return_all_addresses)
+        return rows
+    
+    # def get_individual_address(self):
+    #     address_data = self.find(By.XPATH, "./td[1]").text  # Extracts only the first <td> (Address content)
+    #     return address_data
+    
+    def click_address_book_entries_edit_button(self, index):
+        edit_button_locator = self.locate.get_edit_button_locator(index)  # Get locator tuple
+        edit_button = self.driver.find_element(*edit_button_locator)  # Unpack tuple
+        edit_button.click() 
+
+    def click_address_book_entries_delete_button(self, index):
+        delete_button_locator = self.locate.get_delete_button_locator(index)  # Get locator tuple
+        delete_button = self.driver.find_element(*delete_button_locator)  # Unpack tuple
+        delete_button.click() 

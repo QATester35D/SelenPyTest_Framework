@@ -1,8 +1,22 @@
 from QATests.pages.login_page import LoginPage
 from QATests.tests.base_test import BaseTest
 from QATests.utilities.test_data import TestData
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 class TestLogin(BaseTest):
+
+    def test_standard_login(self):
+        login_page=LoginPage(self.driver)
+        login_page.set_email_address(TestData.email)
+        login_page.set_password(TestData.password)
+        login_page.click_login_button()
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//h2[contains(text(), 'My Account')]"))
+        )
+        actual_title=login_page.get_title()
+        assert actual_title == "My Account"
 
     def test_valid_credentials(self):
         login_page=LoginPage(self.driver)

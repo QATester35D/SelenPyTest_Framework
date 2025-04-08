@@ -14,7 +14,7 @@ class LoginPageLocatorFields:
     new_customer_message = (By.CLASS_NAME, "card-body")
     website_main_message = (By.ID, "entry_217838")
 
-class AddAddressLocatorFields:
+class AddressLocatorFields:
     @staticmethod
     def get_edit_button_locator(index):
         """Returns the locator tuple for the Edit button of a specific row."""
@@ -35,8 +35,7 @@ class AddAddressLocatorFields:
     postcode_field = (By.ID, "input-postcode")
     country_field = (By.ID, "input-country")
     region_state_field = (By.ID, "input-zone")
-    # default_address_yes = (By.XPATH, "//input[@name='default'][@value='1']")
-    default_address = (By.NAME, "default")
+    default_address_radio = (By.NAME, "default")
     new_address_button = (By.XPATH, "//a[contains(@class, 'btn-primary') and text()='New Address']")
     continue_button = (By.XPATH, "//div[@id='content']//input[@value='Continue']")
     success_message = (By.CSS_SELECTOR, "#content .alert-success")

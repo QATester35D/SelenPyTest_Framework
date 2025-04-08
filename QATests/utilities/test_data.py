@@ -3,8 +3,8 @@ class TestData:
     email = "sloporto@asi-test.com"
     password = "Tsleplio1!"
     #Address1 info
-    address1_firstname = "Shawn"
-    address1_lastname = "LoPorto"
+    address1_firstName = "Shawn"
+    address1_lastName = "LoPorto"
     address1_company = "ASI"
     address1_address1 = "123 Forest Road"
     address1_address2 = "Aspen clone 2"

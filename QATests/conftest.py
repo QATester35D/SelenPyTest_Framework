@@ -17,4 +17,5 @@ def initialize_driver(request):
     driver.maximize_window()
     yield
     print("Close Browser")
-    driver.close()
+    # driver.close()
+    driver.quit()

@@ -1,3 +1,4 @@
+import pytest
 from QATests.pages.address_page import AddressPage, MethodRegistry
 from QATests.tests.base_test import BaseTest
 from QATests.utilities.test_data import TestData
@@ -8,6 +9,7 @@ import os
 class TestAddAddress(BaseTest):
 
     #This is a test case to add an address into the Address Book
+    @pytest.mark.smoke
     def test_add_address(self):
         TestLogin.test_standard_login(self)
         add_address_page=AddressPage(self.driver)
@@ -34,8 +36,9 @@ class TestAddAddress(BaseTest):
         assert address_success_msg == "Your address has been successfully added"
         return nameCounter # Return the name counter for further use
     
+    @pytest.mark.functional
     def test_verify_address_info(self):
-        # Login into the application
+        # Login into the application, add an address, and verify the data
         val = TestAddAddress.test_add_address(self)
         rows = TestAddAddress.select_address_book_right_menu(self)
         address_page = AddressPage(self.driver)
@@ -58,19 +61,21 @@ class TestAddAddress(BaseTest):
 
 ###Create some test casses that are self-contained and do not depend on other test cases.
 #Create a data driven test equivalent to the test_verify_address_info method above.
-#Create a test case that will add an address, verify the data, and then delete the address that was just created.
 #Create a test case that will add an address, verify the data, and then edit the address info.
 
+    @pytest.mark.integration
     def test_delete_address_info(self):
-        TestLogin.test_standard_login(self)
-        address_page=AddressPage(self.driver)
-        address_page.click_right_menu_page("Address Book")
-        actual_title=address_page.get_page_title()
-        assert actual_title == "Address Book Entries"
-        # Locate all table rows inside the table
-        rows = address_page.get_addresses_from_table()
-        # Example usage: Click Edit or Delete for a specific row
-        TestAddAddress.perform_action_on_address(self, rows, "Shawn20 LoPorto\nASI\n123 Forest Road\nAspen clone 2\nOuray, Colorado 81427\nUnited States", "delete")
+        val = TestAddAddress.test_add_address(self)
+        rows = TestAddAddress.select_address_book_right_menu(self)
+        address_page = AddressPage(self.driver)
+        firstName = TestData.address1_firstName+str(val) #Used to identify the address to edit
+        # TestAddAddress.perform_action_on_address(self, rows, f"{firstName} LoPorto\nASI\n123 Forest Road\nAspen clone 2\nOuray, Colorado 81427\nUnited States", "delete")
+        TestAddAddress.perform_action_on_address(self, rows, TestAddAddress.build_target_address(self, firstName), "delete")
+        # Verify the address is deleted
+        rows = address_page.get_addresses_from_table() # re-retrieve the rows after deletion
+        targetAddress = TestAddAddress.build_target_address(self, firstName)
+        if TestAddAddress.verify_deletion(self, rows, targetAddress):
+            print(f"Address {firstName} successfully deleted.")
 
 ### Methods to perform actions on addresses
     def select_address_book_right_menu(self):
@@ -119,3 +124,42 @@ class TestAddAddress(BaseTest):
                     case _:
                         print("Invalid action. Use 'edit' or 'delete'.")
                         break
+
+    def verify_deletion(self, rows, target_address):
+        # Check if the address is still present in the table
+        for index, row in enumerate(rows, start=1):
+            address_data = row.find_element(By.XPATH, ".//td[1]").text.strip()
+            if target_address in address_data:
+                print(f"Address {target_address} still exists in row {index}. Deletion failed.")
+                return False
+        print(f"Address {target_address} successfully deleted.")
+        return True
+    
+    def build_target_address(self, firstName):
+        addressDataName=["firstName","lastName","company","address1","address2","city","state","postcode","country"]
+        for dataName in addressDataName:
+            # Get the method name from the registry
+            match dataName:
+                case "firstName":
+                    targetAddress = firstName
+                case "lastName":
+                    dataFieldName = "address1_"+dataName
+                    value = getattr(TestData, dataFieldName)
+                    targetAddress += " " + value
+                case "company","address1","address2","city":
+                    dataFieldName = "address1_"+dataName
+                    value = getattr(TestData, dataFieldName)
+                    targetAddress += "\n" + value
+                case "state":
+                    dataFieldName = "address1_"+dataName
+                    value = getattr(TestData, dataFieldName)
+                    targetAddress += ", " + value
+                case "postcode":
+                    dataFieldName = "address1_"+dataName
+                    value = getattr(TestData, dataFieldName)
+                    targetAddress += " " + value
+                case "country":
+                    dataFieldName = "address1_"+dataName
+                    value = getattr(TestData, dataFieldName)
+                    targetAddress += "\n" + value
+        return targetAddress

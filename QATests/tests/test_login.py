@@ -1,3 +1,4 @@
+import pytest
 from QATests.pages.login_page import LoginPage
 from QATests.tests.base_test import BaseTest
 from QATests.utilities.test_data import TestData
@@ -7,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 class TestLogin(BaseTest):
 
+    @pytest.mark.smoke
     def test_standard_login(self):
         login_page=LoginPage(self.driver)
         login_page.set_email_address(TestData.email)

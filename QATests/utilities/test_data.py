@@ -12,4 +12,4 @@ class TestData:
     address1_postcode = "81427"
     address1_country = "United States"
     address1_state = "Colorado"
-    address1_default_address = "1"
+    address1_default_address = "0"

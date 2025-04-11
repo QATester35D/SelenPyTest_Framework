@@ -1,6 +1,10 @@
 import requests
+import pytest
+from QATests.tests.base_test import BaseTest
 
-class APIGetCall:
+class APIGetCall(BaseTest):
+
+    @pytest.mark.functional
     def test_get_api_call():
         """
         This function tests the GET API call to retrieve an activity by ID.

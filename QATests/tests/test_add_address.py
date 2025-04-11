@@ -43,7 +43,7 @@ class TestAddAddress(BaseTest):
         rows = TestAddAddress.select_address_book_right_menu(self)
         address_page = AddressPage(self.driver)
         firstName=TestData.address1_firstName+str(val) #Used to identify the address to edit
-        TestAddAddress.perform_action_on_address(self, rows, f"{firstName} LoPorto\nASI\n123 Forest Road\nAspen clone 2\nOuray, Colorado 81427\nUnited States", "edit")
+        TestAddAddress.perform_action_on_address(self, rows, TestAddAddress.build_target_address(self, firstName), "edit")
         #setup a loop to get the address info from the form and verify it is correct
         for address_method in MethodRegistry.ADDRESS_PAGE_GET_METHODS:
             # Get the method name from the registry
@@ -69,7 +69,6 @@ class TestAddAddress(BaseTest):
         rows = TestAddAddress.select_address_book_right_menu(self)
         address_page = AddressPage(self.driver)
         firstName = TestData.address1_firstName+str(val) #Used to identify the address to edit
-        # TestAddAddress.perform_action_on_address(self, rows, f"{firstName} LoPorto\nASI\n123 Forest Road\nAspen clone 2\nOuray, Colorado 81427\nUnited States", "delete")
         TestAddAddress.perform_action_on_address(self, rows, TestAddAddress.build_target_address(self, firstName), "delete")
         # Verify the address is deleted
         rows = address_page.get_addresses_from_table() # re-retrieve the rows after deletion
@@ -77,7 +76,9 @@ class TestAddAddress(BaseTest):
         if TestAddAddress.verify_deletion(self, rows, targetAddress):
             print(f"Address {firstName} successfully deleted.")
 
+####################################################
 ### Methods to perform actions on addresses
+####################################################
     def select_address_book_right_menu(self):
         address_page=AddressPage(self.driver)
         address_page.click_right_menu_page("Address Book")

@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
 import pytest
 from QATests.pages.address_page import AddressPage, MethodRegistry
 from QATests.tests.base_test import BaseTest

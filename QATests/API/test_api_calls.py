@@ -1,7 +1,4 @@
-# import sys
-# import os
-# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-
+import os
 import json
 import requests
 import pytest
@@ -65,10 +62,6 @@ class TestAPIGetCall:
         headers_test = {
             'Content-Type':'application/json'
         }
-        # payload = {
-        #     "name": "shawn",
-        #     "job": "SDET"
-        # }
 
         json_file = os.path.join(os.path.dirname(__file__), "../data/users.json")
         with open(json_file, "r", encoding="utf-8") as file:

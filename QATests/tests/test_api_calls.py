@@ -1,8 +1,8 @@
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-import json
+# import sys
+# import os
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
+import json
 import requests
 import pytest
 from QATests.tests.base_test import BaseTest
@@ -83,4 +83,12 @@ class TestAPIGetCall(BaseTest):
 
         assert response.status_code == 201, "Status code is not 201"
 
-    
+    def test_get_reqres_demo_(self):
+        header = {
+            'Content-Type':'application/json'
+        }
+        base_url = 'https://reqres.in/'
+        response = requests.get(url=str(base_url+'api/users/2'), headers=header)
+        print(response.status_code)
+        print(response.text)
+        assert response.status_code == 200, "Status code is not 200"

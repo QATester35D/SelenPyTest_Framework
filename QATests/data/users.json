@@ -1,4 +1,7 @@
 {
-    "name": "shawn",
-    "job": "SDET"
+    "new_user": {
+        "name": "shawn",
+        "job": "SDET",
+        "email": "test123@gmail.com"
+    }
 }

@@ -3,7 +3,6 @@ import pytest
 from selenium import webdriver
 from QATests.utilities.test_data import TestData
 import os
-import sys
 
 @pytest.fixture(params=["chrome", "firefox", "edge"])
 def initialize_driver(request):

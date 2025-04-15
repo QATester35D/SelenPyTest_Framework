@@ -7,7 +7,7 @@ import requests
 import pytest
 from QATests.tests.base_test import BaseTest
 
-class TestAPIGetCall(BaseTest):
+class TestAPIGetCall:
 
     @pytest.mark.functional
     def test_get_api_call(self):

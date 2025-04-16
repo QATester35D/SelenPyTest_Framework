@@ -1,2 +1,0 @@
-Browser:  firefox
-Close Browser

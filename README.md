@@ -8,7 +8,7 @@ The Test Automation Framework being implemented consists of these key components
 
 'conftest.py' - Configuration File
 - Used to define some global fixtures
-- Contains some Setup/Teardown logic
+- Contains Setup/Teardown logic
 
 'utilities' folder:
 'locators.py' – Centralized Object Repository
@@ -20,6 +20,9 @@ The Test Automation Framework being implemented consists of these key components
 'api_client.py' - centralized CRUD methods for API calls to code.
 
 'pages' folder - this contains files for various functionality on the website that help to reduce code. It primarily consists of methods to simplify identifying objects in code.
+
+'db' folder:
+- This contains database connections, database setup logic and various methods to be used against the database.
 
 'tests' folder:
 - This contains test files that contain tests within them to test the various features of the website, grouped by functionality.

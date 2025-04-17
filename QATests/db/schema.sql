@@ -1,0 +1,16 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS orders;
+
+CREATE TABLE users (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    customer_name VARCHAR(75) NOT NULL,
+    email VARCHAR(75) NOT NULL UNIQUE,
+    gender VARCHAR(6) NOT NULL,
+    customer_status VARCHAR(8) NOT NULL
+);
+
+CREATE TABLE products (
+    productId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product VARCHAR(50) NOT NULL,
+    price DECIMAL(10,2) NOT NULL
+);

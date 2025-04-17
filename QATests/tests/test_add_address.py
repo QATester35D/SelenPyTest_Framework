@@ -5,12 +5,18 @@ from QATests.utilities.test_data import TestData
 from QATests.tests.test_login import TestLogin
 from selenium.webdriver.common.by import By
 import os
+import QATests.db.db_connection
 
 class TestAddAddress(BaseTest):
 
     #This is a test case to add an address into the Address Book
     @pytest.mark.smoke
     def test_add_address(self):
+        dbHelpers=QATests.db.db_connection.DatabaseOperations()
+        cursor=dbHelpers.cur
+        rowCount=dbHelpers.db_check_count("users")
+        if rowCount != 0:
+            userInfo=dbHelpers.db_get_users_name_email()
         TestLogin.test_standard_login(self)
         add_address_page=AddressPage(self.driver)
         add_address_page.click_right_menu_page("Address Book")

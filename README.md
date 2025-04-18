@@ -1,4 +1,4 @@
-This code base implements a Test Automation Framework that uses python and pytest, using a page object model approach to test a web based application and to test APIs. From the selenium test automation approach it utilizes reuse and data driven testing.
+This code base implements a Test Automation Framework that uses python and pytest, using a page object model approach to test a web based application, has a setup and teardown process of seeding data in a database and resetting the database after each test so that each test has a fresh seeded data set to work with. This automation also tests APIs. From the selenium test automation approach it utilizes reuse and data driven testing.
 
 The Test Automation Framework being implemented consists of these key components:
 'pytest.ini' - Test Configuration File

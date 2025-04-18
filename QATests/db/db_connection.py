@@ -1,5 +1,6 @@
 import mysql.connector
 from QATests.db.db_config import DB_CONFIG
+import json
 
 class DatabaseOperations:
     def __init__(self):
@@ -33,3 +34,14 @@ class DatabaseOperations:
         cursor.execute(query)
         result = cursor.fetchall()
         return result
+    
+    def db_get_full_user_info(self):
+        cursor=self.cur
+        query = "SELECT * FROM users ORDER BY RAND() LIMIT 1;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        # Manually defined column names (in the order returned by SELECT *)
+        keys = ["id","first_name","last_name","email","company_name","address1","address2","city","state","zip_code","country","gender","customer_status"]
+        # Convert to list of dictionaries
+        records = [dict(zip(keys, row)) for row in result]
+        return records

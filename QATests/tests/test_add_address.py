@@ -11,10 +11,7 @@ class TestAddAddress(BaseTest):
 
     #This is a test case to add an address into the Address Book
     @pytest.mark.smoke
-    def test_add_address(self, setup_database):
-        rowCount=setup_database.db_check_count("users")
-        if rowCount != 0:
-            userInfo=setup_database.db_get_users_name_email()
+    def test_add_address(self):
         TestLogin.test_standard_login(self)
         add_address_page=AddressPage(self.driver)
         add_address_page.click_right_menu_page("Address Book")
@@ -63,12 +60,25 @@ class TestAddAddress(BaseTest):
             assert actualFieldValue == expectedFieldValue, f"Expected {fieldName} to be {expectedFieldValue}, but got {actualFieldValue}"
             print(f"Expected the value: {expectedFieldValue} and the Actual value is: {actualFieldValue}")
 
-###Create some test casses that are self-contained and do not depend on other test cases.
-#Create a data driven test equivalent to the test_verify_address_info method above.
-#Create a test case that will add an address, verify the data, and then edit the address info.
-
     @pytest.mark.integration
     def test_delete_address_info(self):
+        val = TestAddAddress.test_add_address(self)
+        rows = TestAddAddress.select_address_book_right_menu(self)
+        address_page = AddressPage(self.driver)
+        firstName = TestData.address1_firstName+str(val) #Used to identify the address to edit
+        TestAddAddress.perform_action_on_address(self, rows, TestAddAddress.build_target_address(self, firstName), "delete")
+        # Verify the address is deleted
+        rows = address_page.get_addresses_from_table() # re-retrieve the rows after deletion
+        targetAddress = TestAddAddress.build_target_address(self, firstName)
+        if TestAddAddress.verify_deletion(self, rows, targetAddress):
+            print(f"Address {firstName} successfully deleted.")
+
+    @pytest.mark.integration
+    def test_delete_address_db_info(self, setup_database):
+        rowCount=setup_database.db_check_count("users")
+        if rowCount != 0:
+            userInfo=setup_database.db_get_full_user_info()
+            TestAddAddress.map_data_from_db(userInfo)
         val = TestAddAddress.test_add_address(self)
         rows = TestAddAddress.select_address_book_right_menu(self)
         address_page = AddressPage(self.driver)
@@ -168,3 +178,15 @@ class TestAddAddress(BaseTest):
                     value = getattr(TestData, dataFieldName)
                     targetAddress += "\n" + value
         return targetAddress
+    
+    def map_data_from_db(db_data):
+        TestData.address1_firstName = db_data[0]["first_name"]
+        TestData.address1_lastName = db_data[0]["last_name"]
+        TestData.address1_company = db_data[0]["company_name"]
+        TestData.address1_address1 = db_data[0]["address1"]
+        TestData.address1_address2 = db_data[0]["address2"]
+        TestData.address1_city = db_data[0]["city"]
+        TestData.address1_postcode = db_data[0]["zip_code"]
+        TestData.address1_country = db_data[0]["country"]
+        TestData.address1_state = db_data[0]["state"]
+        TestData.address1_default_address = "0"

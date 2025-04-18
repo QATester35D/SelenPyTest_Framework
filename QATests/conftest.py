@@ -1,6 +1,5 @@
 import json
 import pytest
-import mysql.connector
 from selenium import webdriver
 import QATests.db.db_connection
 from QATests.utilities.test_data import TestData
@@ -29,12 +28,8 @@ def initialize_driver(request):
 # === Database Setup/Teardown ===
 @pytest.fixture(scope="function", autouse=True)
 def setup_database():
-    # conn = get_db_connection()
-    # cursor = conn.cursor()
     dbHelpers=QATests.db.db_connection.DatabaseOperations()
-    # cursor=DB_Helpers.cur
     cursor=dbHelpers.cur
-
     # Load and run schema.sql
     with open(os.path.join("QATests/db", "schema.sql"), "r") as f:
         schema_sql = f.read()
@@ -49,17 +44,17 @@ def setup_database():
             if stmt.strip():
                 cursor.execute(stmt)
 
-    # conn.commit()
+    dbHelpers.mydb.commit()
     print("Database setup complete.")
 
-    yield # Run tests
+    yield dbHelpers # Run tests and pass in the database helper object 
 
     # Teardown: drop the test tables
-    cursor.execute("DROP TABLE IF EXISTS orders;")
+    cursor.execute("DROP TABLE IF EXISTS products;")
     cursor.execute("DROP TABLE IF EXISTS users;")
-    # conn.commit()
-    # cursor.close()
-    # conn.close()
+    dbHelpers.mydb.commit()
+    cursor.close()
+    dbHelpers.mydb.close()
     print("Database teardown complete.")
 
 @pytest.fixture

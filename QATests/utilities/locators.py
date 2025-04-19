@@ -25,6 +25,7 @@ class AddressLocatorFields:
         """Returns the locator tuple for the Edit button of a specific row."""
         return (By.XPATH, f"//table[@class='table table-bordered table-hover']//tbody/tr[{index}]/td[2]/a[contains(@class, 'btn-danger')]")
 
+    main_page_title = (By.XPATH, "//h2[contains(text(), 'My Account')]")
     address_book_page_titles = (By.XPATH, "//div[@id='content']//h1")
     firstname_field = (By.ID, "input-firstname")
     lastname_field = (By.ID, "input-lastname")

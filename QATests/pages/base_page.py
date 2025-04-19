@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 
 class BasePage:
@@ -8,6 +9,9 @@ class BasePage:
     """
     def __init__(self, driver):
         self.driver = driver
+
+    def wait_for_clickable(self, locator, timeout=10):
+        return self.wait_for_element(locator, timeout, EC.element_to_be_clickable)
 
     def find(self, *locator):
         return self.driver.find_element(*locator)

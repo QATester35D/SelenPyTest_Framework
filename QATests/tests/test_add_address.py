@@ -2,6 +2,7 @@ import pytest
 from QATests.pages.address_page import AddressPage, MethodRegistry
 from QATests.tests.base_test import BaseTest
 from QATests.utilities.test_data import TestData
+from QATests.utilities.locators import AddressLocatorFields
 from QATests.tests.test_login import TestLogin
 from selenium.webdriver.common.by import By
 import os
@@ -54,6 +55,9 @@ class TestAddAddress(BaseTest):
             if fieldName == "firstName":
                 firstNameValueFromPage = getattr(address_page, fieldName)()
                 actualFieldValue = firstNameValueFromPage[:-len(str(val))]
+            elif fieldName == "default_address":
+                selected_radio_value = next(rb.get_attribute("value") for rb in self.driver.find_elements(*AddressLocatorFields.default_address_radio) if rb.is_selected())
+                actualFieldValue = selected_radio_value if selected_radio_value else "0"
             else:                   
                 actualFieldValue = getattr(address_page, fieldName)()
             expectedFieldValue = getattr(TestData, dataFieldName)
@@ -73,6 +77,7 @@ class TestAddAddress(BaseTest):
         if TestAddAddress.verify_deletion(self, rows, targetAddress):
             print(f"Address {firstName} successfully deleted.")
 
+    # This test case is intended to show the same logic as the one above while demonstrating getting the test data from a database instead
     @pytest.mark.integration
     def test_delete_address_db_info(self, setup_database):
         rowCount=setup_database.db_check_count("users")
@@ -161,7 +166,7 @@ class TestAddAddress(BaseTest):
                     dataFieldName = "address1_"+dataName
                     value = getattr(TestData, dataFieldName)
                     targetAddress += " " + value
-                case "company","address1","address2","city":
+                case "company" | "address1" | "address2" | "city":
                     dataFieldName = "address1_"+dataName
                     value = getattr(TestData, dataFieldName)
                     targetAddress += "\n" + value

@@ -8,6 +8,10 @@ class LoginPage(BasePage):
         self.locate = LoginPageLocatorFields
         super().__init__(driver)
 
+    def click_login_button(self):
+        login_btn = self.wait_for_element(LoginPageLocatorFields.login_button)
+        login_btn.click()
+
     def set_email_address(self, email_address):
         self.set(self.locate.email_address_field, email_address)
 

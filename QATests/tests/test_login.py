@@ -2,9 +2,11 @@ import pytest
 from QATests.pages.login_page import LoginPage
 from QATests.tests.base_test import BaseTest
 from QATests.utilities.test_data import TestData
+from QATests.utilities.locators import LoginPageLocatorFields, AddressLocatorFields
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+import time
 
 class TestLogin(BaseTest):
 
@@ -13,10 +15,8 @@ class TestLogin(BaseTest):
         login_page=LoginPage(self.driver)
         login_page.set_email_address(TestData.email)
         login_page.set_password(TestData.password)
-        login_page.click_login_button()
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//h2[contains(text(), 'My Account')]"))
-        )
+        login_page.click_login_button() #This is actually a custom method that will sync and click on the login button
+        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(AddressLocatorFields.main_page_title))
         actual_title=login_page.get_title()
         assert actual_title == "My Account"
 

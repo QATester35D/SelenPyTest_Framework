@@ -1,4 +1,4 @@
-This project implements a Test Automation Framework that uses selenium, python and pytest, using a page object model approach to test a web based application, has a setup and teardown process of seeding data in a database and resetting the database after each test so that each test has a fresh seeded dataset to work with. This automation also tests APIs. From the selenium test automation approach it utilizes reuse and data driven testing.
+This project implements a Test Automation Framework that uses selenium, python and pytest, using a page object model approach to test a web based application, has a setup and teardown process of seeding data in a MySQL database and resetting the database after each test so that each test has a fresh seeded dataset to work with. This automation also tests APIs. From the selenium test automation approach it utilizes code/method reuse and data driven testing.
 
 The Test Automation Framework being implemented consists of these key components:
 'pytest.ini' - Test Configuration File

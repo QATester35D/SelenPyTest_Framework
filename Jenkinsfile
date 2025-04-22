@@ -14,25 +14,14 @@ pipeline {
             }
         }
 
-        stage('Set up Python environment') {
+        stage('Setup and Run Tests') {
             steps {
-                sh '''
+                bat '''
                     python -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip
-                    pip install -r QATests/requirements.txt
-                '''
-            }
-        }
-
-        stage('Run Tests with Pytest') {
-            steps {
-                sh '''
-                    . venv/bin/activate
-                    pytest QATests/tests \
-                        --html=QATests/reports/test_report.html \
-                        --self-contained-html \
-                        --tb=short -v
+                    call venv\\Scripts\\activate
+                    python -m pip install --upgrade pip
+                    python -m pip install -r QATests\\requirements.txt
+                    pytest QATests\\tests --html=QATests\\reports\\test_report.html --junitxml=QATests\\reports\\TEST-results.xml --self-contained-html --tb=short -v
                 '''
             }
         }

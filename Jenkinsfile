@@ -17,6 +17,7 @@ pipeline {
         stage('Setup and Run Tests') {
             steps {
                 bat '''
+                    set PYTHONPATH=%CD%\\QATests
                     python -m venv venv
                     call venv\\Scripts\\activate
                     python -m pip install --upgrade pip

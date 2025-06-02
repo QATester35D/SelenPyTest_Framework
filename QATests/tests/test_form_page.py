@@ -1,9 +1,9 @@
 from selenium.webdriver.common.by import By
+from QATests.tests.base_test import BaseTest
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver import ActionChains
-from utilities.formPageLocators import WebOrderForm
+from utilities.formPageLocators import FormPageLocatorFields
 import random
 import requests
 import time
@@ -11,18 +11,18 @@ import time
 ##########################################################################################
 #                               Refactoring now...
 ##########################################################################################
-# Exercising test automation against the webForm on a form on another website
-#
-# This first check I don't always run as it validates that each link is valid - can be pinged/hit
-# There are a lot of links to process through on the main page so I don't always 
-# run this check all the time.
+# Test automaton using Pytest Page Object Model
+# This automation is against a web form. Normally I would automate the whole
+#   form in one test, but this is not a normal form so I'm creating tests to 
+#   check the form in groups/sections of perceived "functionality".
 ##########################################################################################
 # Methods
 #Needs refactoring
-# 1. Pull out object definitions into page definitions
-#   1. focus just on dropdown/listbox functionality
-#   2. grouping the other behaviors in another class
-class WebOrderForm:
+# Done - 1. Pull out object definitions into page definitions
+#   2. Create page methods for each object type
+#   3. Group the functionality into perceived "features"
+
+class WebFormPage(BaseTest):
     def __init__(self, url):
         #Attributes of the WebOrderForm class here
         self.url = url   # self.url = "https://www.selenium.dev/selenium/web/formPage.html"

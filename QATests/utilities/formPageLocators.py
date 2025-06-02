@@ -54,4 +54,6 @@ class FormPageLocatorFields:
     disabled_submit_element_button=(By.ID,"disabledSubmitElement")
     kill_containing_iframe_button=(By.ID,"killIframe")
     label_checkbox=(By.ID,"checkbox-with-label")
-    
+    submit_id_button=(By.ID,"submit")
+    submit_name_button=(By.NAME,"submit")
+    searchable_text_field=(By.ID,"vsearchGadget")

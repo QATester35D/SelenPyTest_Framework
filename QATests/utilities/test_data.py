@@ -1,4 +1,4 @@
-class TestData:
+class LambdaTestSiteTestData:
     url = "https://ecommerce-playground.lambdatest.io/index.php?route=account/login"
     email = "sloporto@asi-test.com"
     password = "Tsleplio1!"
@@ -13,3 +13,6 @@ class TestData:
     address1_country = "United States"
     address1_state = "Colorado"
     address1_default_address = "0"
+
+class WebFormPageTestData:
+    url = "https://www.selenium.dev/selenium/web/formPage.html"

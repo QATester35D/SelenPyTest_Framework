@@ -2,7 +2,7 @@ import json
 import pytest
 from selenium import webdriver
 import QATests.db.db_connection
-from QATests.utilities.test_data import TestData
+from QATests.utilities.test_data import LambdaTestSiteTestData
 import os
 
 # === Browser Fixture ===
@@ -17,13 +17,20 @@ def initialize_driver(request):
             driver = webdriver.Edge()
     request.cls.driver = driver
     print("Browser: ", request.param)
-    driver.get(TestData.url)
-    driver.maximize_window()
+    # driver.get(TestData.url)
+    # driver.maximize_window()
 
     yield # Run tests
 
     print("Close Browser")
     driver.quit()
+
+@pytest.fixture
+def open_url(request):
+    url = request.param
+    driver = request.cls.driver 
+    driver.get(url)
+    return driver
 
 # === Database Setup/Teardown ===
 @pytest.fixture(scope="function", autouse=True)

@@ -5,8 +5,6 @@ from QATests.utilities.test_data import LambdaTestSiteTestData
 from QATests.utilities.locators import LoginPageLocatorFields, AddressLocatorFields
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-import time
 
 class TestLogin(BaseTest):
 

@@ -1,7 +1,7 @@
 import pytest
 from QATests.pages.address_page import AddressPage, MethodRegistry
 from QATests.tests.base_test import BaseTest
-from QATests.utilities.test_data import TestData
+from QATests.utilities.test_data import LambdaTestSiteTestData
 from QATests.utilities.locators import AddressLocatorFields
 from QATests.tests.test_login import TestLogin
 from selenium.webdriver.common.by import By
@@ -12,6 +12,7 @@ class TestAddAddress(BaseTest):
 
     #This is a test case to add an address into the Address Book
     @pytest.mark.smoke
+    # @pytest.mark.parametrize('open_url', [LambdaTestSiteTestData.url], indirect=True)
     def test_add_address(self):
         TestLogin.test_standard_login(self)
         add_address_page=AddressPage(self.driver)
@@ -22,29 +23,30 @@ class TestAddAddress(BaseTest):
         actual_title=add_address_page.get_page_title()
         assert actual_title == "Add Address"
         nameCounter=TestAddAddress.increment_get_address_name_counter()
-        makingFirstNameUnique=TestData.address1_firstName+nameCounter
+        makingFirstNameUnique=LambdaTestSiteTestData.address1_firstName+nameCounter
         add_address_page.firstName(makingFirstNameUnique)
-        add_address_page.lastName(TestData.address1_lastName)
-        add_address_page.company(TestData.address1_company)
-        add_address_page.address1(TestData.address1_address1)
-        add_address_page.address2(TestData.address1_address2)
-        add_address_page.city(TestData.address1_city)
-        add_address_page.postcode(TestData.address1_postcode)
-        add_address_page.country(TestData.address1_country)
-        add_address_page.state(TestData.address1_state)
-        add_address_page.default_address(TestData.address1_default_address)
+        add_address_page.lastName(LambdaTestSiteTestData.address1_lastName)
+        add_address_page.company(LambdaTestSiteTestData.address1_company)
+        add_address_page.address1(LambdaTestSiteTestData.address1_address1)
+        add_address_page.address2(LambdaTestSiteTestData.address1_address2)
+        add_address_page.city(LambdaTestSiteTestData.address1_city)
+        add_address_page.postcode(LambdaTestSiteTestData.address1_postcode)
+        add_address_page.country(LambdaTestSiteTestData.address1_country)
+        add_address_page.state(LambdaTestSiteTestData.address1_state)
+        add_address_page.default_address(LambdaTestSiteTestData.address1_default_address)
         add_address_page.click_continue_button()
         address_success_msg = add_address_page.get_success_message()
         assert address_success_msg == "Your address has been successfully added"
         return nameCounter # Return the name counter for further use
     
     @pytest.mark.functional
+    @pytest.mark.parametrize('open_url', [LambdaTestSiteTestData.url], indirect=True)
     def test_verify_address_info(self):
         # Login into the application, add an address, and verify the data
         val = TestAddAddress.test_add_address(self)
         rows = TestAddAddress.select_address_book_right_menu(self)
         address_page = AddressPage(self.driver)
-        firstName=TestData.address1_firstName+str(val) #Used to identify the address to edit
+        firstName=LambdaTestSiteTestData.address1_firstName+str(val) #Used to identify the address to edit
         TestAddAddress.perform_action_on_address(self, rows, TestAddAddress.build_target_address(self, firstName), "edit")
         #setup a loop to get the address info from the form and verify it is correct
         for address_method in MethodRegistry.ADDRESS_PAGE_GET_METHODS:
@@ -60,16 +62,17 @@ class TestAddAddress(BaseTest):
                 actualFieldValue = selected_radio_value if selected_radio_value else "0"
             else:                   
                 actualFieldValue = getattr(address_page, fieldName)()
-            expectedFieldValue = getattr(TestData, dataFieldName)
+            expectedFieldValue = getattr(LambdaTestSiteTestData, dataFieldName)
             assert actualFieldValue == expectedFieldValue, f"Expected {fieldName} to be {expectedFieldValue}, but got {actualFieldValue}"
             print(f"Expected the value: {expectedFieldValue} and the Actual value is: {actualFieldValue}")
 
     @pytest.mark.integration
+    @pytest.mark.parametrize('open_url', [LambdaTestSiteTestData.url], indirect=True)
     def test_delete_address_info(self):
         val = TestAddAddress.test_add_address(self)
         rows = TestAddAddress.select_address_book_right_menu(self)
         address_page = AddressPage(self.driver)
-        firstName = TestData.address1_firstName+str(val) #Used to identify the address to edit
+        firstName = LambdaTestSiteTestData.address1_firstName+str(val) #Used to identify the address to edit
         TestAddAddress.perform_action_on_address(self, rows, TestAddAddress.build_target_address(self, firstName), "delete")
         # Verify the address is deleted
         rows = address_page.get_addresses_from_table() # re-retrieve the rows after deletion
@@ -79,6 +82,7 @@ class TestAddAddress(BaseTest):
 
     # This test case is intended to show the same logic as the one above while demonstrating getting the test data from a database instead
     @pytest.mark.integration
+    @pytest.mark.parametrize('open_url', [LambdaTestSiteTestData.url], indirect=True)
     def test_delete_address_db_info(self, setup_database):
         rowCount=setup_database.db_check_count("users")
         if rowCount != 0:
@@ -87,7 +91,7 @@ class TestAddAddress(BaseTest):
         val = TestAddAddress.test_add_address(self)
         rows = TestAddAddress.select_address_book_right_menu(self)
         address_page = AddressPage(self.driver)
-        firstName = TestData.address1_firstName+str(val) #Used to identify the address to edit
+        firstName = LambdaTestSiteTestData.address1_firstName+str(val) #Used to identify the address to edit
         TestAddAddress.perform_action_on_address(self, rows, TestAddAddress.build_target_address(self, firstName), "delete")
         # Verify the address is deleted
         rows = address_page.get_addresses_from_table() # re-retrieve the rows after deletion
@@ -164,34 +168,34 @@ class TestAddAddress(BaseTest):
                     targetAddress = firstName
                 case "lastName":
                     dataFieldName = "address1_"+dataName
-                    value = getattr(TestData, dataFieldName)
+                    value = getattr(LambdaTestSiteTestData, dataFieldName)
                     targetAddress += " " + value
                 case "company" | "address1" | "address2" | "city":
                     dataFieldName = "address1_"+dataName
-                    value = getattr(TestData, dataFieldName)
+                    value = getattr(LambdaTestSiteTestData, dataFieldName)
                     targetAddress += "\n" + value
                 case "state":
                     dataFieldName = "address1_"+dataName
-                    value = getattr(TestData, dataFieldName)
+                    value = getattr(LambdaTestSiteTestData, dataFieldName)
                     targetAddress += ", " + value
                 case "postcode":
                     dataFieldName = "address1_"+dataName
-                    value = getattr(TestData, dataFieldName)
+                    value = getattr(LambdaTestSiteTestData, dataFieldName)
                     targetAddress += " " + value
                 case "country":
                     dataFieldName = "address1_"+dataName
-                    value = getattr(TestData, dataFieldName)
+                    value = getattr(LambdaTestSiteTestData, dataFieldName)
                     targetAddress += "\n" + value
         return targetAddress
     
     def map_data_from_db(db_data):
-        TestData.address1_firstName = db_data[0]["first_name"]
-        TestData.address1_lastName = db_data[0]["last_name"]
-        TestData.address1_company = db_data[0]["company_name"]
-        TestData.address1_address1 = db_data[0]["address1"]
-        TestData.address1_address2 = db_data[0]["address2"]
-        TestData.address1_city = db_data[0]["city"]
-        TestData.address1_postcode = db_data[0]["zip_code"]
-        TestData.address1_country = db_data[0]["country"]
-        TestData.address1_state = db_data[0]["state"]
-        TestData.address1_default_address = "0"
+        LambdaTestSiteTestData.address1_firstName = db_data[0]["first_name"]
+        LambdaTestSiteTestData.address1_lastName = db_data[0]["last_name"]
+        LambdaTestSiteTestData.address1_company = db_data[0]["company_name"]
+        LambdaTestSiteTestData.address1_address1 = db_data[0]["address1"]
+        LambdaTestSiteTestData.address1_address2 = db_data[0]["address2"]
+        LambdaTestSiteTestData.address1_city = db_data[0]["city"]
+        LambdaTestSiteTestData.address1_postcode = db_data[0]["zip_code"]
+        LambdaTestSiteTestData.address1_country = db_data[0]["country"]
+        LambdaTestSiteTestData.address1_state = db_data[0]["state"]
+        LambdaTestSiteTestData.address1_default_address = "0"

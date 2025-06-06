@@ -7,10 +7,8 @@ from QATests.utilities.test_data import LambdaTestSiteTestData
 class TestChangePassword(BaseTest):
 
     @pytest.mark.regression
-    @pytest.mark.parametrize('open_url', [LambdaTestSiteTestData.url], indirect=True)
-    def test_changing_password(self, open_url):
-        driver = open_url
-        login_page=LoginPage(driver)
+    def test_changing_password(self):
+        self.driver.get(LambdaTestSiteTestData.url)
         login_page=LoginPage(self.driver)
         change_password_page=ChangePasswordPage(self.driver)
         expected_message="Password confirmation does not match password!"

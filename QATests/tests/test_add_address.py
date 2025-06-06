@@ -1,20 +1,19 @@
 import pytest
 from QATests.pages.address_page import AddressPage, MethodRegistry
 from QATests.tests.base_test import BaseTest
+from QATests.helpers.login_helpers import perform_standard_login
 from QATests.utilities.test_data import LambdaTestSiteTestData
 from QATests.utilities.locators import AddressLocatorFields
-from QATests.tests.test_login import TestLogin
 from selenium.webdriver.common.by import By
 import os
-# import QATests.db.db_connection
 
 class TestAddAddress(BaseTest):
 
     #This is a test case to add an address into the Address Book
     @pytest.mark.smoke
-    # @pytest.mark.parametrize('open_url', [LambdaTestSiteTestData.url], indirect=True)
     def test_add_address(self):
-        TestLogin.test_standard_login(self)
+        self.driver.get(LambdaTestSiteTestData.url)
+        perform_standard_login(self.driver, LambdaTestSiteTestData.email, LambdaTestSiteTestData.password)
         add_address_page=AddressPage(self.driver)
         add_address_page.click_right_menu_page("Address Book")
         actual_title=add_address_page.get_page_title()
@@ -40,7 +39,6 @@ class TestAddAddress(BaseTest):
         return nameCounter # Return the name counter for further use
     
     @pytest.mark.functional
-    @pytest.mark.parametrize('open_url', [LambdaTestSiteTestData.url], indirect=True)
     def test_verify_address_info(self):
         # Login into the application, add an address, and verify the data
         val = TestAddAddress.test_add_address(self)
@@ -67,7 +65,6 @@ class TestAddAddress(BaseTest):
             print(f"Expected the value: {expectedFieldValue} and the Actual value is: {actualFieldValue}")
 
     @pytest.mark.integration
-    @pytest.mark.parametrize('open_url', [LambdaTestSiteTestData.url], indirect=True)
     def test_delete_address_info(self):
         val = TestAddAddress.test_add_address(self)
         rows = TestAddAddress.select_address_book_right_menu(self)
@@ -82,7 +79,6 @@ class TestAddAddress(BaseTest):
 
     # This test case is intended to show the same logic as the one above while demonstrating getting the test data from a database instead
     @pytest.mark.integration
-    @pytest.mark.parametrize('open_url', [LambdaTestSiteTestData.url], indirect=True)
     def test_delete_address_db_info(self, setup_database):
         rowCount=setup_database.db_check_count("users")
         if rowCount != 0:

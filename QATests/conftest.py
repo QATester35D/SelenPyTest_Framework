@@ -1,7 +1,9 @@
+from dotenv import load_dotenv
+load_dotenv()
 import json
 import pytest
 from selenium import webdriver
-import QATests.db.db_connection
+from QATests.db.db_connection import DatabaseOperations
 from QATests.utilities.test_data import LambdaTestSiteTestData
 import os
 
@@ -13,8 +15,8 @@ def initialize_driver(request):
             driver = webdriver.Chrome()
         case "firefox":
             driver = webdriver.Firefox()
-        case "edge":
-            driver = webdriver.Edge()
+        # case "edge":
+        #     driver = webdriver.Edge()
     request.cls.driver = driver
     print("Browser: ", request.param)
     # driver.get(TestData.url)
@@ -25,27 +27,29 @@ def initialize_driver(request):
     print("Close Browser")
     driver.quit()
 
-@pytest.fixture
-def open_url(request):
-    url = request.param
-    driver = request.cls.driver 
-    driver.get(url)
-    return driver
+# @pytest.fixture
+# def open_url(request):
+#     url = request.param
+#     driver = request.cls.driver 
+#     driver.get(url)
+#     return driver
 
 # === Database Setup/Teardown ===
 @pytest.fixture(scope="function", autouse=True)
 def setup_database():
-    dbHelpers=QATests.db.db_connection.DatabaseOperations()
+    dbHelpers=DatabaseOperations()
     cursor=dbHelpers.cur
     # Load and run schema.sql
-    with open(os.path.join("QATests/db", "schema.sql"), "r") as f:
+    base_path = os.path.dirname(__file__)
+    db_path = os.path.join(base_path, "db")
+    with open(os.path.join(db_path, "schema.sql"), "r") as f:
         schema_sql = f.read()
         for stmt in schema_sql.split(';'):
             if stmt.strip():
                 cursor.execute(stmt)
 
     # Load and run seed_data.sql
-    with open(os.path.join("QATests/db", "seed_data.sql"), "r") as f:
+    with open(os.path.join(db_path, "seed_data.sql"), "r") as f:
         seed_sql = f.read()
         for stmt in seed_sql.split(';'):
             if stmt.strip():

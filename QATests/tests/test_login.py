@@ -14,7 +14,9 @@ class TestLogin(BaseTest):
         self.driver.get(LambdaTestSiteTestData.url)
         perform_standard_login(self.driver, LambdaTestSiteTestData.email, LambdaTestSiteTestData.password)
 
-    # Need to rethink this test as I'm logging in with an existing customer account, not a new one
+    # This would be my approach to testing "login creation" but I'm not going to make the email unique as this
+    # # is not my website and I don't want to come across as hacking their site.
+    @pytest.mark.skip(reason="Skipping test for login creation as it requires unique email and password.")
     def test_valid_credentials(self):
         self.driver.get(LambdaTestSiteTestData.url)
         perform_standard_login(self.driver, LambdaTestSiteTestData.email, LambdaTestSiteTestData.password)

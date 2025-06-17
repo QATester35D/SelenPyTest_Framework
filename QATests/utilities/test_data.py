@@ -15,4 +15,4 @@ class LambdaTestSiteTestData:
     address1_default_address = "0"
 
 class WebFormPageTestData:
-    url = "https://www.selenium.dev/selenium/web/formPage.html"
+    webFormPageURL = "https://www.selenium.dev/selenium/web/formPage.html"

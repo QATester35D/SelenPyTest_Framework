@@ -3,6 +3,7 @@ import json
 import requests
 import pytest
 from QATests.tests.base_test import BaseTest
+import time
 
 class TestAPIGetCall:
 

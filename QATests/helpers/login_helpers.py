@@ -1,5 +1,4 @@
 from QATests.pages.login_page import LoginPage
-# from QATests.utilities.test_data import LambdaTestSiteTestData
 from QATests.utilities.locators import AddressLocatorFields
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC

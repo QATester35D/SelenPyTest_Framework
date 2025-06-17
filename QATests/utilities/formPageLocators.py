@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
-##########################################################################################
+###########################################################################################
+# Object definitions using By statement identification for the web/formPage functionality.
 ###########################################################################################
 class FormPageLocatorFields:
     email_field=(By.ID,"email")

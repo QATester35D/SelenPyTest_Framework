@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 # Object definitions using By statement identification for the web/formPage functionality.
 ###########################################################################################
 class FormPageLocatorFields:
+    main_page_title=(By.XPATH, "/html/head/title[contains(text(),'We Leave From Here')]")
+    arrival_page_title=(By.XPATH, "/html/head/title[contains(text(),'We Arrive Here')]")
     email_field=(By.ID,"email")
     age_field=(By.ID,"age")
     hello_there_button=(By.ID,"submitButton")

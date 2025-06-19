@@ -1,10 +1,5 @@
-from selenium.webdriver.common.by import By
-from selenium import webdriver
 from QATests.tests.base_test import BaseTest
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.support import expected_conditions as EC
-from QATests.utilities.formPageLocators import FormPageLocatorFields
+from QATests.helpers.webFormPage_helpers import PageSynchronization
 from QATests.utilities.test_data import WebFormPageTestData
 from QATests.pages.form_page import FormPage
 import random
@@ -26,23 +21,18 @@ import time
 #   3. Group the functionality into perceived "features"
 
 class TestWebFormPage(BaseTest):
-    # def __init__(self, url):
-    #     #Attributes of the WebOrderForm class here
-    #     self.url = url   # self.url = "https://www.selenium.dev/selenium/web/formPage.html"
 
-    # #The following are methods for the behavior and actions - this is mixed and why it should be refactored later
-    # def launchPage(self):
-    #     seleniumDevbrowser = webdriver.Firefox()
-    #     print("Now working with the Selenium Dev webpages - the web form page")
-    #     seleniumDevbrowser.get(self.url)
-    #     seleniumDevbrowser.set_window_size(900, 800)
-    #     return(seleniumDevbrowser)
     def test_filling_top_section(self):
         self.driver.get(WebFormPageTestData.webFormPageURL)
+        sync=PageSynchronization(self.driver)
         form_page=FormPage(self.driver)
         form_page.set_email_field("sloporto@asi-test.com")
         form_page.set_age_field("21")
-        form_page.click_hello_button()
-        time.sleep(2)
+        form_page.click_hello_there_button()
+        sync.arrival_page_sync()
         self.driver.back()
-        time.sleep(2)
+        sync.main_page_sync()
+        form_page.click_image_button()
+        sync.arrival_page_sync()
+        self.driver.back()
+        sync.main_page_sync()

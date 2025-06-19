@@ -3,6 +3,19 @@ import requests
 import time
 
 class TestAPIGetCall:
+    def __init__(self, webhook_url):
+        self.webhook_url = webhook_url
+
+    def _send_payload(self, channel, msg):
+        payload = {
+            "channel": channel,
+            "username": "selenpytest",
+            "text": msg,
+            "icon_emoji": ":ghost:"
+        }
+
+        response = requests.post(self.webhook_url, data={'payload': json.dumps(payload)})
+        return response.status_code
 
     def send_slack_notification(self, channel, username, text, icon_emoji, webhook_url):
         """
@@ -21,10 +34,8 @@ class TestAPIGetCall:
             "icon_emoji": icon_emoji
         }
 
-        response = requests.post(
-            webhook_url,
-            data={'payload': json.dumps(payload)}
-        )
+        #This worked
+        # response = requests.post(self.webhook_url, data={'payload': json.dumps(payload)})
 
         if response.status_code != 200:
             raise ValueError(f"Request to Slack returned error {response.status_code}, response: {response.text}")

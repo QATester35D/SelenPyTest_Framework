@@ -1,13 +1,22 @@
 from QATests.pages.form_page import FormPage
-from QATests.utilities.locators import AddressLocatorFields
+from QATests.utilities.formPageLocators import FormPageLocatorFields
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-#The following are methods for the behavior and actions - this is mixed and why it should be refactored later
-# def launchPage(driver):
-#     seleniumDevbrowser = webdriver.Firefox()
-#     print("Now working with the Selenium Dev webpages - the web form page")
-#     seleniumDevbrowser.get(self.url)
-#     seleniumDevbrowser.set_window_size(900, 800)
-#     return(seleniumDevbrowser)
+class PageSynchronization:
+    def __init__(self, driver):
+        self.driver = driver
+
+    def wait_for_page_title(self, title_locator, expected_title):
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(title_locator)
+        )
+        actual_title=FormPage(self.driver).get_title()
+        assert actual_title == expected_title, f"Expected to get page title: {expected_title}, but got {actual_title}"
+
+    def arrival_page_sync(self):
+        self.wait_for_page_title(FormPageLocatorFields.arrival_page_title, "We Arrive Here")
+
+    def main_page_sync(self):
+        self.wait_for_page_title(FormPageLocatorFields.main_page_title, "We Leave From Here")
 

@@ -1,42 +1,60 @@
 import json
 import requests
 import time
+import os
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+from dotenv import load_dotenv
 
-class TestAPIGetCall:
+# Get the Slack Bot token and set the webclient
+load_dotenv()
+slack_token=os.environ['SLACK_BOT_TOKEN']
+client = WebClient(token=slack_token)
 
-    def send_slack_notification(self, channel, username, text, icon_emoji, webhook_url):
-        """
-            Sends a message to a Slack channel using an incoming webhook.
-            Args:
-                channel (str): Slack channel (e.g., "#selenpytest")
-                username (str): Display name of the bot
-                text (str): Message text
-                icon_emoji (str): Emoji to use as icon (e.g., ":ghost:")
-                webhook_url (str): Slack webhook URL
-        """
+class TestSlackWebhookCall:
+    def __init__(self, webhook_url):
+        self.webhook_url = webhook_url
+
+    def _send_payload(self, channel, msg):
         payload = {
             "channel": channel,
-            "username": username,
-            "text": text,
-            "icon_emoji": icon_emoji
+            "username": "selenpytest",
+            "text": msg,
+            "icon_emoji": ":ghost:"
         }
 
-        response = requests.post(
-            webhook_url,
-            data={'payload': json.dumps(payload)}
-        )
+        response = requests.post(self.webhook_url, data={'payload': json.dumps(payload)})
+        return response.status_code
+    
+    def webhook_notify_general_channel(self,msg):
+        return self._send_payload("#selenpytest",msg)
 
-        if response.status_code != 200:
-            raise ValueError(f"Request to Slack returned error {response.status_code}, response: {response.text}")
-        else:
-            print(f"Notification sent to {channel}")
+    def webhook_notify_ci_channel(self,msg):
+        return self._send_payload("#ci-results",msg)
 
-apiCalls=TestAPIGetCall()
-webhook = "https://hooks.slack.com/services/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"
-apiCalls.send_slack_notification(
-    channel="#selenpytest",
-    username="selenpytest",
-    text="This is posted from python and VSCode to #selenpytest and comes from a bot named selenpytest.",
-    icon_emoji=":ghost:",
-    webhook_url=webhook
-)
+class TestSlackAPICall:
+    def __init__(self):
+        pass
+
+    def send_slack_channel_message(self, channel_id, text):
+        try:
+            # Use the chat.postMessage method to send a message
+            response = client.chat_postMessage(
+                channel=channel_id,
+                text=text
+            )
+            print(f"Message sent: {response['message']['text']}")
+        except SlackApiError as e:
+            print(f"Error sending message: {e.response['error']}")
+
+#Slack API post
+slackAPI=TestSlackAPICall()
+channel_id = "C092KESV1K2"
+message_text = "Another test from python"
+slackAPI.send_slack_channel_message(channel_id, message_text)
+
+#Slack Webhook post
+webhook = os.environ['WEBHOOK_URL']
+slackWebhookCalls=TestSlackWebhookCall(webhook)
+result1=slackWebhookCalls.webhook_notify_general_channel("Message to general channel that CI is running latest build.")
+result2=slackWebhookCalls.webhook_notify_ci_channel("CI rand and all results passed.")

@@ -50,11 +50,11 @@ class TestSlackAPICall:
 #Slack API post
 slackAPI=TestSlackAPICall()
 channel_id = "C092KESV1K2"
-message_text = "Another test from python"
+message_text = "Making sure this still works #1"
 slackAPI.send_slack_channel_message(channel_id, message_text)
 
-#Slack Webhook post
+#Slack Webhook post - need to update webhook url to post to the selenpytest channel also
 webhook = os.environ['WEBHOOK_URL']
 slackWebhookCalls=TestSlackWebhookCall(webhook)
-result1=slackWebhookCalls.webhook_notify_general_channel("Message to general channel that CI is running latest build.")
-result2=slackWebhookCalls.webhook_notify_ci_channel("CI rand and all results passed.")
+result1=slackWebhookCalls.webhook_notify_general_channel("Making sure this still works #2")
+result2=slackWebhookCalls.webhook_notify_ci_channel("Making sure this still works #3")

@@ -15,12 +15,17 @@ class FormPage(BasePage):
     def click_hello_there_button(self):
         self.click(self.locate.hello_there_button)
 
+    def get_hello_there_button_label(self):
+        return self.find(*self.locate.hello_there_button).get_attribute("value")
+    
+    def get_image_button_alt_text(self):
+        return self.find(*self.locate.click_me_button).get_attribute("alt")
+
     def click_image_button(self):
         self.click(self.locate.click_me_button)
     
     def select_checkbox1(self):
         self.click(self.locate.checkbox1)
-
 
     #optional generic method for data-driven use cases
     def set_input_field_by_name(self, field_attr_name, value):
@@ -29,3 +34,4 @@ class FormPage(BasePage):
             raise AttributeError(f"No locator named '{field_attr_name}' in FormPageLocators")
         locator = getattr(self.locate, field_attr_name)
         self.set(locator, value)
+

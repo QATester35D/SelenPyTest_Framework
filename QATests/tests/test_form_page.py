@@ -1,7 +1,8 @@
 from QATests.tests.base_test import BaseTest
-from QATests.helpers.webFormPage_helpers import PageSynchronization
+from QATests.helpers.webFormPage_helpers import PageSynchronization, CheckboxValidation
 from QATests.utilities.test_data import WebFormPageTestData
 from QATests.pages.form_page import FormPage
+from QATests.utilities.formPageLocators import FormPageLocatorFields
 import random
 import requests
 import time
@@ -23,11 +24,18 @@ import time
 class TestWebFormPage(BaseTest):
 
     def test_filling_top_section(self):
+        #This code addresses the top 2 text fields, two buttons and 4 checkboxes
+        fpFields=FormPageLocatorFields
         self.driver.get(WebFormPageTestData.webFormPageURL)
+        chkbox=CheckboxValidation(self.driver)
         sync=PageSynchronization(self.driver)
         form_page=FormPage(self.driver)
         form_page.set_email_field("sloporto@asi-test.com")
         form_page.set_age_field("21")
+        button_label=form_page.get_hello_there_button_label()
+        assert button_label == "Hello there", f"Expected to get the button value: 'Hello there', but got {button_label}"
+        alt_text=form_page.get_image_button_alt_text()
+        assert alt_text == "click me!", f"Expected to get the button alt text: 'click me!', but got {alt_text}"
         form_page.click_hello_there_button()
         sync.arrival_page_sync()
         self.driver.back()
@@ -36,3 +44,6 @@ class TestWebFormPage(BaseTest):
         sync.arrival_page_sync()
         self.driver.back()
         sync.main_page_sync()
+        #Verify checky checkboxes now
+        chkbox.validate_initial_checky_checkboxes_state()
+

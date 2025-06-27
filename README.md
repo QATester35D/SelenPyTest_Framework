@@ -1,6 +1,17 @@
-This project implements a Test Automation Framework that uses selenium, python and pytest, using a page object model approach to test a web based application, has a setup and teardown process of seeding data in a MySQL database and resetting the database after each test so that each test has a fresh seeded dataset to work with. This automation also tests APIs. From the selenium test automation approach it utilizes code/method reuse and data driven testing.
+This project implements a Test Automation Framework that uses selenium, python and pytest using a page object model approach to test several web based applications, has a setup and teardown process of seeding data in a MySQL database and resetting the database after each test so that each test has a fresh seeded dataset to work with. It demonstrates data-driven testing for some of the tests, and also performs some API testing and utilizes Webhooks and API calls for reporting into Slack. The test automation approach utilizes code/method reuse and helper methods.
+
+The tests can also be run from Jenkins CI/CD.
+
+The main public websites used in testing are:
+- "https://ecommerce-playground.lambdatest.io/index.php?route=account/login" (this site limits automation capabilities when running from a test agent or Jenkins CI)
+- "https://www.selenium.dev/selenium/web/formPage.html" (this is a site created by Selenium)
+
+API coding & testing: several sites are used including Slack. Most API sites either restrict you from performing Post or Put calls since those calls are updating the remote host or they implement a mock stub so the data isn't really updated there so you can't execute a Get after a Post to validate that the data was successfully updated like you would in normal testing. The Post or Put will execute and return a 200 response but the data doesn't get updated. Due to this I created a Slack workspace and implemented some Slack notifications using the Slack API and Webhooks since I can then actually do posts to the Slack workspace to simulate notifications.
+
+Database testing is done with a MySQL database locally. This is used to demonstrate interacting with a database using SQL commands and implementing a Setup and Teardown as part of the the test automation process.
 
 The Test Automation Framework being implemented consists of these key components:
+
 'pytest.ini' - Test Configuration File
 - Used to configure global settings for how pytest discovers, organizes, and executes tests across the entire framework.
 - It defines the markers being used.
@@ -9,6 +20,8 @@ The Test Automation Framework being implemented consists of these key components
 'conftest.py' - Configuration File
 - Used to define some global fixtures
 - Contains Setup/Teardown logic
+
+'helpers' folder: contains files for the various sites that includes methods to help with common processes and simplify test code.
 
 'utilities' folder:
 'locators.py' – Centralized Object Repository

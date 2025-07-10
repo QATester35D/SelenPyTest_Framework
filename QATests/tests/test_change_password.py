@@ -4,6 +4,8 @@ from QATests.pages.login_page import LoginPage
 from QATests.tests.base_test import BaseTest
 from QATests.utilities.test_data import LambdaTestSiteTestData
 
+#This is for the website: https://ecommerce-playground.lambdatest.io/index.php?route=account/login
+
 class TestChangePassword(BaseTest):
 
     @pytest.mark.regression

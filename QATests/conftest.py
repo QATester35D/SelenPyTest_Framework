@@ -5,7 +5,12 @@ import pytest
 from selenium import webdriver
 from QATests.db.db_connection import DatabaseOperations
 from QATests.utilities.test_data import LambdaTestSiteTestData
+from datetime import datetime
 import os
+import sys
+import logging
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # === Browser Fixture ===
 @pytest.fixture(params=["chrome", "firefox", "edge"])
@@ -22,7 +27,7 @@ def initialize_driver(request):
     # driver.get(TestData.url)
     # driver.maximize_window()
 
-    yield # Run tests
+    yield driver # Run tests
 
     print("Close Browser")
     driver.quit()
@@ -33,6 +38,39 @@ def initialize_driver(request):
 #     driver = request.cls.driver 
 #     driver.get(url)
 #     return driver
+
+# Automatically enable caplog logging for all tests
+@pytest.fixture(autouse=True)
+def enable_caplog(caplog):
+    yield caplog
+
+# This will store captured log output per test
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    # Execute all other hooks to obtain the report object
+    outcome = yield
+    report = outcome.get_result()
+    # Only act on actual test calls, not setup/teardown, and only write out screenshots on failures
+    #  The "enable_caplog" above writes out the log info from the logger calls
+    if report.when == "call":
+        # Screenshot on failure
+        if report.failed:
+            driver = getattr(item.cls, "driver", None) or item.funcargs.get("driver", None)
+            if driver:
+                timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                filename = f"{item.name}_{timestamp}.png"
+                screenshot_dir = os.path.join("reports", "screenshots")
+                os.makedirs(screenshot_dir, exist_ok=True)
+                screenshot_path = os.path.join(screenshot_dir, filename)
+
+                driver.save_screenshot(screenshot_path)
+
+                # Attach screenshot to HTML report (if using pytest-html)
+                if item.config.pluginmanager.hasplugin("html"):
+                    from pytest_html import extras
+                    extra = getattr(report, "extra", [])
+                    extra.append(extras.image(screenshot_path))
+                    report.extra = extra
 
 # === Database Setup/Teardown ===
 @pytest.fixture(scope="function", autouse=True)

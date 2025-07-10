@@ -3,6 +3,7 @@ from QATests.helpers.webFormPage_helpers import PageSynchronization, CheckboxVal
 from QATests.utilities.test_data import WebFormPageTestData
 from QATests.pages.form_page import FormPage
 from QATests.utilities.formPageLocators import FormPageLocatorFields
+import logging
 import random
 import requests
 import time
@@ -21,10 +22,13 @@ import time
 #   2. Create page methods for each object type
 #   3. Group the functionality into perceived "features"
 
+logger = logging.getLogger(__name__)
+
 class TestWebFormPage(BaseTest):
 
     def test_filling_top_section(self):
         #This code addresses the top 2 text fields, two buttons and 4 checkboxes
+        logger.info("Testing the test_filling_top_section functionality.")
         fpFields=FormPageLocatorFields
         self.driver.get(WebFormPageTestData.webFormPageURL)
         chkbox=CheckboxValidation(self.driver)
@@ -45,5 +49,9 @@ class TestWebFormPage(BaseTest):
         self.driver.back()
         sync.main_page_sync()
         #Verify checky checkboxes now
+        logger.info("Checking the checky checkboxes now.")
         chkbox.validate_initial_checky_checkboxes_state()
 
+# twfp=TestWebFormPage()
+# twfp.test_filling_top_section()
+# time.sleep(1)

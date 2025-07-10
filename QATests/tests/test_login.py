@@ -7,6 +7,8 @@ from QATests.utilities.locators import LoginPageLocatorFields, AddressLocatorFie
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+#This is for the website: https://ecommerce-playground.lambdatest.io/index.php?route=account/login
+
 class TestLogin(BaseTest):
 
     @pytest.mark.smoke

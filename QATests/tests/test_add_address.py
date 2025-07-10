@@ -7,6 +7,8 @@ from QATests.utilities.locators import AddressLocatorFields
 from selenium.webdriver.common.by import By
 import os
 
+#This is for the website: https://ecommerce-playground.lambdatest.io/index.php?route=account/login
+
 class TestAddAddress(BaseTest):
 
     #This is a test case to add an address into the Address Book

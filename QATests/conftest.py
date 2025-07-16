@@ -1,16 +1,39 @@
-from dotenv import load_dotenv
-load_dotenv()
 import json
 import pytest
+from dotenv import load_dotenv
 from selenium import webdriver
 from QATests.db.db_connection import DatabaseOperations
 from QATests.utilities.test_data import LambdaTestSiteTestData
+from QATests.helpers.webFormPage_assertLoggingHelpers import AssertHelper, AssertTracker
 from datetime import datetime
 import os
 import sys
 import logging
 
+load_dotenv()
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+@pytest.fixture
+def page_factory(driver):
+    def _get_page(PageClass):
+        return PageClass(driver)
+    return _get_page
+
+@pytest.fixture
+def assert_helper():
+    AssertTracker().reset()
+    return AssertHelper()
+
+@pytest.fixture(autouse=True)
+def finalize_assertions():
+    yield  # Run the test
+    AssertTracker().assert_all()
+
+def pytest_metadata(metadata):
+    metadata['Project'] = "Webpage Customer Portal"
+    metadata['PI'] = "Program Increment - PI 2025_2"
+    metadata['Sprint'] = "Sprint 3"
+    metadata['Tester'] = "Shawn LoPorto"
 
 # === Browser Fixture ===
 @pytest.fixture(params=["chrome", "firefox", "edge"])

@@ -39,9 +39,8 @@ class TestWebFormPage(BaseTest):
 
         bv=ButtonValidation(self.driver)
         bv.validate_submit_button_label(form_page,assert_helper)
+        bv.validate_submit_button_alt_text_label(form_page,assert_helper)
 
-        alt_text=form_page.get_image_button_alt_text()
-        assert alt_text == "click me!", f"Expected to get the button alt text: 'click me!', but got {alt_text}"
         form_page.click_hello_there_button()
         sync.arrival_page_sync()
         self.driver.back()

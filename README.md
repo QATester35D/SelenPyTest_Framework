@@ -21,7 +21,11 @@ The Test Automation Framework being implemented consists of these key components
 - Used to define some global fixtures
 - Contains Setup/Teardown logic
 
-'helpers' folder: contains files for the various sites that includes methods to help with common processes and simplify test code.
+'assertions' folder: This is for my custom assertion approach. A normal assert won't log anything when the assert passes and will terminate execution if there is a failure. I implemented an assertion approach to log both pass and fail results, requirement IDs, description and continue testing. If there is a validation that should fail the test execution, then a regular assert statement will be used.
+
+'helpers' folder: 
+- contains helper files for the various sites that includes methods to help with common processes and simplify test code.
+- contains files for handling the custom assertions
 
 'utilities' folder:
 'locators.py' – Centralized Object Repository

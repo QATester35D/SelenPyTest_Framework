@@ -1,4 +1,8 @@
-pytest
-pytest-html
-selenium
-mysql-connector-python
+mysql_connector_repackaged==0.3.1
+pytest==8.3.3
+pytest_html==4.1.1
+python-dotenv==1.1.1
+Requests==2.32.4
+selenium==4.34.2
+slack_sdk==3.35.0
+softest==1.2.0.0

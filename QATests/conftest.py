@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from selenium import webdriver
 from QATests.db.db_connection import DatabaseOperations
 from QATests.utilities.test_data import LambdaTestSiteTestData
-from QATests.helpers.webFormPage_assertLoggingHelpers import AssertHelper, AssertTracker
+from QATests.assertions.webFormPage_assertLoggingHelpers import AssertHelper, AssertTracker
 from datetime import datetime
 import os
 import sys

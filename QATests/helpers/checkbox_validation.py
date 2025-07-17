@@ -1,25 +1,5 @@
-from QATests.pages.form_page import FormPage
 from QATests.utilities.formPageLocators import FormPageLocatorFields
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from QATests.pages.base_page import BasePage
-
-class PageSynchronization:
-    def __init__(self, driver):
-        self.driver = driver
-
-    def wait_for_page_title(self, title_locator, expected_title):
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(title_locator)
-        )
-        actual_title=FormPage(self.driver).get_title()
-        assert actual_title == expected_title, f"Expected to get page title: {expected_title}, but got {actual_title}"
-
-    def arrival_page_sync(self):
-        self.wait_for_page_title(FormPageLocatorFields.arrival_page_title, "We Arrive Here")
-
-    def main_page_sync(self):
-        self.wait_for_page_title(FormPageLocatorFields.main_page_title, "We Leave From Here")
 
 class CheckboxValidation(BasePage):
     def __init__(self, driver):
@@ -69,26 +49,3 @@ class CheckboxValidation(BasePage):
                     assert checkbox.is_enabled() == check["expected_enabled"], (f"{name} checkbox enabled state mismatch. Expected: {check['expected_enabled']}, but got: {checkbox.is_enabled()}")
                 case _:
                     print ("Invalid checky checkbox name. The name passed was ",name)
-
-class ButtonValidation(BasePage):
-    def __init__(self, driver):
-        self.locate = FormPageLocatorFields
-        super().__init__(driver)
-
-    def validate_submit_button_label(self, form_page, assert_helper):
-        label = form_page.get_hello_there_button_label()
-        assert_helper.equal(
-            actual=label,
-            expected="Hello there",
-            requirement_id="REQ-101",
-            description="Submit button should be labeled 'Hello there'"
-        )
-
-    def validate_submit_button_alt_text_label(self, form_page, assert_helper):
-        label = form_page.get_image_button_alt_text()
-        assert_helper.equal(
-            actual=label,
-            expected="click me!",
-            requirement_id="REQ-102",
-            description="Image Button alt label should be 'click me!'"
-        )

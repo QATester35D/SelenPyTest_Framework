@@ -48,7 +48,7 @@ class TestWebFormPage(BaseTest):
         sync.main_page_sync(assert_helper)
         #Verify checky checkboxes now
         logger.info("Checking the checky checkboxes now.")
-        chkbox.validate_initial_checky_checkboxes_state()
+        chkbox.validate_initial_checky_checkboxes_state(assert_helper)
 
 # twfp=TestWebFormPage()
 # twfp.test_filling_top_section()

@@ -6,7 +6,7 @@ class CheckboxValidation(BasePage):
         self.locate = FormPageLocatorFields
         super().__init__(driver)
 
-    def validate_initial_checky_checkboxes_state(self):
+    def validate_initial_checky_checkboxes_state(self, assert_helper):
         checky_checkboxes = {
             "checky": {
                 "locator": self.locate.checkbox1,
@@ -37,15 +37,16 @@ class CheckboxValidation(BasePage):
 
         for name, check in checky_checkboxes.items():
             checkbox = self.find(*check["locator"])
-            match name:
-                case "checky":
-                    assert checkbox.is_selected() == check["expected_selected"], (f"{name} checkbox selected state mismatch. Expected: {check['expected_selected']}, but got: {checkbox.is_selected()}")
-                    assert checkbox.is_displayed() == check["expected_display"], (f"{name} checkbox displayed state mismatch. Expected: {check['expected_display']}, but got: {checkbox.is_displayed()}")
-                    assert checkbox.is_enabled() == check["expected_enabled"], (f"{name} checkbox enabled state mismatch. Expected: {check['expected_enabled']}, but got: {checkbox.is_enabled()}")
-                    assert checkbox.get_attribute("value") == check["expected_value"], f"Expected the checkbox value to be: {check["expected_value"]}, but got {checkbox.get_attribute("value")}"
-                case "checkedchecky" | "disabledchecky" | "randomly_disabled_checky":
-                    assert checkbox.is_selected() == check["expected_selected"], (f"{name} checkbox selected state mismatch. Expected: {check['expected_selected']}, but got: {checkbox.is_selected()}")
-                    assert checkbox.is_displayed() == check["expected_display"], (f"{name} checkbox displayed state mismatch. Expected: {check['expected_display']}, but got: {checkbox.is_displayed()}")
-                    assert checkbox.is_enabled() == check["expected_enabled"], (f"{name} checkbox enabled state mismatch. Expected: {check['expected_enabled']}, but got: {checkbox.is_enabled()}")
-                case _:
-                    print ("Invalid checky checkbox name. The name passed was ",name)
+            self.assert_checkbox_value(checkbox.is_selected(),check["expected_selected"],f"{name} checkbox, verifying the 'selected' state. Expected: {check['expected_selected']}, Actual is: {checkbox.is_selected()}", assert_helper)
+            self.assert_checkbox_value(checkbox.is_displayed(),check["expected_display"],f"{name} checkbox, verifying the 'displayed' state. Expected: {check['expected_display']}, Actual is: {checkbox.is_displayed()}", assert_helper)
+            self.assert_checkbox_value(checkbox.is_enabled(),check["expected_enabled"],f"{name} checkbox, verifying the 'enabled' state. Expected: {check['expected_enabled']}, Actual is: {checkbox.is_enabled()}", assert_helper)
+            if name == "checky":
+                self.assert_checkbox_value(checkbox.get_attribute("value"),check["expected_value"],f"{name} checkbox, verifying the 'value' attribute. Expected: {check["expected_value"]}, Actual is: {checkbox.get_attribute("value")}", assert_helper)
+
+    def assert_checkbox_value(self, actual_title, expected_title, message, assert_helper):
+        assert_helper.equal(
+            actual=actual_title,
+            expected=expected_title,
+            requirement_id="REQ-104",
+            description=message
+        )    

@@ -35,6 +35,7 @@ class TestWebFormPage(BaseTest):
         form_page.set_email_field("sloporto@asi-test.com")
         form_page.set_age_field("21")
 
+        logger.info("Verifying the button navigation.")
         bv.validate_submit_button_label(form_page,assert_helper)
         bv.validate_submit_button_alt_text_label(form_page,assert_helper)
 
@@ -50,6 +51,3 @@ class TestWebFormPage(BaseTest):
         logger.info("Checking the checky checkboxes now.")
         chkbox.validate_initial_checky_checkboxes_state(assert_helper)
 
-# twfp=TestWebFormPage()
-# twfp.test_filling_top_section()
-# time.sleep(1)

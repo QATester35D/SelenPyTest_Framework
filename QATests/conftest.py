@@ -62,7 +62,7 @@ def initialize_driver(request):
             raise ValueError(f"Unsupported browser: {browser}")
         
     request.cls.driver = driver
-    print("Browser: ", request.param)
+    print("Browser: ", browser)
 
     yield driver # Run tests
 

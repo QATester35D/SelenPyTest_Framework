@@ -29,7 +29,7 @@ pipeline {
                        --junitxml=QATests\\reports\\TEST-results.xml ^
                        --self-contained-html ^
                        --tb=short -v ^
-                       -o soft_asserts=false
+                       -o soft_asserts=true
                 '''
             }
         }

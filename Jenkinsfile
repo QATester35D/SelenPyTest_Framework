@@ -24,6 +24,7 @@ pipeline {
                     python -m pip install -r QATests\\requirements.txt
                     REM pytest QATests\\tests --html=QATests\\reports\\test_report.html --junitxml=QATests\\reports\\TEST-results.xml --self-contained-html --tb=short -v
                     pytest QATests\\tests\\test_form_page.py ^
+                       --browser=chrome ^
                        --html=QATests\\reports\\test_report.html ^
                        --junitxml=QATests\\reports\\TEST-results.xml ^
                        --self-contained-html ^

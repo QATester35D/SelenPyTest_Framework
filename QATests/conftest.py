@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 # These next two functions are for controlling soft/hard assertions
 def pytest_addoption(parser):
     parser.addini("soft_asserts", "Enable soft assertions", default="true")
+    parser.addoption("--browser", action="store", default="chrome", help="Browser to run tests on")
 
 def pytest_configure(config):
     from QATests.assertions import webFormPage_assertLoggingHelpers
@@ -45,25 +46,48 @@ def pytest_metadata(metadata):
     metadata['Sprint'] = "Sprint 3"
     metadata['Tester'] = "Shawn LoPorto"
 
-# === Browser Fixture ===
-@pytest.fixture(params=["chrome", "firefox", "edge"])
+# === Browser Fixture === New approach specifying from Jenkinsfile
+@pytest.fixture(scope="class")
 def initialize_driver(request):
-    match request.param:
+    browser = request.config.getoption("--browser").lower()
+
+    match browser:
         case "chrome":
             driver = webdriver.Chrome()
         case "firefox":
             driver = webdriver.Firefox()
-        # case "edge":
-        #     driver = webdriver.Edge()
+        case "edge":
+            driver = webdriver.Edge()
+        case _:
+            raise ValueError(f"Unsupported browser: {browser}")
+        
     request.cls.driver = driver
     print("Browser: ", request.param)
-    # driver.get(TestData.url)
-    # driver.maximize_window()
 
     yield driver # Run tests
 
     print("Close Browser")
     driver.quit()
+
+# # === Browser Fixture === Original approach
+# @pytest.fixture(params=["chrome", "firefox", "edge"])
+# def initialize_driver(request):
+#     match request.param:
+#         case "chrome":
+#             driver = webdriver.Chrome()
+#         case "firefox":
+#             driver = webdriver.Firefox()
+#         # case "edge":
+#         #     driver = webdriver.Edge()
+#     request.cls.driver = driver
+#     print("Browser: ", request.param)
+#     # driver.get(TestData.url)
+#     # driver.maximize_window()
+
+#     yield driver # Run tests
+
+#     print("Close Browser")
+#     driver.quit()
 
 # Automatically enable caplog logging for all tests
 @pytest.fixture(autouse=True)

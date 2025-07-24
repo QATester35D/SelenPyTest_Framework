@@ -49,7 +49,7 @@ pipeline {
 
     post {
         always {
-            junit '**/TEST-*.xml' allowEmptyResults: true
+            junit(testResults: '**/TEST-*.xml', allowEmptyResults: true)
         }
 
         failure {

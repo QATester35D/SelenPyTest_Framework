@@ -13,8 +13,8 @@ class CheckboxValidation(BasePage):
                 "expected_selected": False,
                 "expected_display": True,
                 "expected_enabled": True,
-                # "expected_value": "furrfu" #This is the correct value
-                "expected_value": "furfu" #This is intentional to force a failure
+                "expected_value": "furrfu" #This is the correct value
+                # "expected_value": "furfu" #This is intentional to force a failure
             },
             "checkedchecky": {
                 "locator": self.locate.checkbox2,

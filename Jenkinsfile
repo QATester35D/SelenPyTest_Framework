@@ -17,11 +17,15 @@ pipeline {
         stage('Setup and Run Tests') {
             steps {
                 bat '''
+                    echo "== BEGIN PYTEST =="
+
                     set PYTHONPATH=%CD%\\QATests
                     python -m venv venv
                     call venv\\Scripts\\activate
                     python -m pip install --upgrade pip
                     python -m pip install -r QATests\\requirements.txt
+
+                    echo "== RUNNING PYTEST =="
                     REM pytest QATests\\tests --html=QATests\\reports\\test_report.html --junitxml=QATests\\reports\\TEST-results.xml --self-contained-html --tb=short -v
                     pytest QATests\\tests\\test_form_page.py ^
                        --browser=chrome ^
@@ -30,6 +34,8 @@ pipeline {
                        --self-contained-html ^
                        --tb=short -v ^
                        -o soft_asserts=true
+
+                    echo "== PYTEST DONE =="
                 '''
             }
         }

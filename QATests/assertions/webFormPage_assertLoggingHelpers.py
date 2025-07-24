@@ -1,8 +1,15 @@
-# assert_helpers.py
 import logging
 
 logger = logging.getLogger(__name__)
 
+# Default value, overridden by pytest config
+_USE_SOFT_ASSERTS = True
+
+def set_global_soft_asserts(value: bool):
+    global _USE_SOFT_ASSERTS
+    _USE_SOFT_ASSERTS = value
+
+# This is for soft assertions using a singleton pattern for tracking assertions
 class AssertTracker:
     _instance = None
 
@@ -41,24 +48,32 @@ class AssertTracker:
                 messages.append(msg)
             raise AssertionError("Soft assertion failures:\n" + "\n".join(messages))
 
-
+# A helper class for commonly used assertions
 class AssertHelper:
 
     @staticmethod
-    def equal(actual, expected, requirement_id, description, fail_message=None):
+    def equal(actual, expected, requirement_id, description, fail_message=None, soft=None):
         tracker = AssertTracker()
         passed = actual == expected
         tracker.log_assert(passed, requirement_id, description, actual, expected)
-        if not passed:
+
+        # Use global setting if soft is not explicitly provided
+        effective_soft = _USE_SOFT_ASSERTS if soft is None else soft
+
+        if not passed and not effective_soft:
             fail_text = fail_message or f"{description} | Expected: {expected}, Got: {actual}"
             raise AssertionError(f"❌ [{requirement_id}] {fail_text}")
 
     @staticmethod
-    def true(condition, requirement_id, description, fail_message=None):
+    def true(condition, requirement_id, description, fail_message=None, soft=None):
         tracker = AssertTracker()
         passed = bool(condition)
         tracker.log_assert(passed, requirement_id, description)
-        if not passed:
+
+        # Use global setting if soft is not explicitly provided
+        effective_soft = _USE_SOFT_ASSERTS if soft is None else soft
+
+        if not passed and not effective_soft:
             fail_text = fail_message or f"{description} | Condition evaluated to False"
             raise AssertionError(f"❌ [{requirement_id}] {fail_text}")
 

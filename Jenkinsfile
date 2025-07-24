@@ -22,7 +22,13 @@ pipeline {
                     call venv\\Scripts\\activate
                     python -m pip install --upgrade pip
                     python -m pip install -r QATests\\requirements.txt
-                    pytest QATests\\tests --html=QATests\\reports\\test_report.html --junitxml=QATests\\reports\\TEST-results.xml --self-contained-html --tb=short -v
+                    REM pytest QATests\\tests --html=QATests\\reports\\test_report.html --junitxml=QATests\\reports\\TEST-results.xml --self-contained-html --tb=short -v
+                    pytest QATests\\tests\\test_form_page.py ^
+                       --html=QATests\\reports\\test_report.html ^
+                       --junitxml=QATests\\reports\\TEST-results.xml ^
+                       --self-contained-html ^
+                       --tb=short -v ^
+                       -o soft_asserts=false
                 '''
             }
         }

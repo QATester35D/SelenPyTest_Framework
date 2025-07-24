@@ -13,6 +13,16 @@ import logging
 load_dotenv()
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# These next two functions are for controlling soft/hard assertions
+def pytest_addoption(parser):
+    parser.addini("soft_asserts", "Enable soft assertions", default="true")
+
+def pytest_configure(config):
+    from QATests.assertions import webFormPage_assertLoggingHelpers
+    webFormPage_assertLoggingHelpers.set_global_soft_asserts(
+        config.getini("soft_asserts").lower() == "true"
+    )
+
 @pytest.fixture
 def page_factory(driver):
     def _get_page(PageClass):
@@ -54,13 +64,6 @@ def initialize_driver(request):
 
     print("Close Browser")
     driver.quit()
-
-# @pytest.fixture
-# def open_url(request):
-#     url = request.param
-#     driver = request.cls.driver 
-#     driver.get(url)
-#     return driver
 
 # Automatically enable caplog logging for all tests
 @pytest.fixture(autouse=True)

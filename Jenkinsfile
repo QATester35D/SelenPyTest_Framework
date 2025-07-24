@@ -19,7 +19,7 @@ pipeline {
                 bat '''
                     echo "== BEGIN PYTEST =="
 
-                    set PYTHONPATH=%CD%\\QATests
+                    set PYTHONPATH=%CD%
                     python -m venv venv
                     call venv\\Scripts\\activate
                     python -m pip install --upgrade pip

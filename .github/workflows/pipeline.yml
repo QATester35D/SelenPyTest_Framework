@@ -38,6 +38,36 @@ jobs:
           # Show warnings but don't fail the job for now
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
 
+      # Step 6: 
+      - name: Load environment variables and Wait for MySQL to be ready
+        env:
+          DB_HOST: ${{ secrets.CI_DB_HOST }}
+          DB_PORT: ${{ secrets.CI_DB_PORT }}
+          DB_USER: ${{ secrets.CI_DB_USER }}
+          DB_PASSWORD: ${{ secrets.CI_DB_PASSWORD }}
+          DB_NAME: ${{ secrets.CI_DB_NAME }}
+        run: |
+          echo "Waiting for MySQL to be ready..."
+          for i in {1..30}; do
+            if mysqladmin ping -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWORD" --silent; then
+              echo "MySQL is ready!"
+              break
+            fi
+            echo "Waiting for MySQL... ($i)"
+            sleep 2
+          done
+
+          # Final check if still not up
+          if ! mysqladmin ping -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWORD" --silent; then
+            echo "MySQL did not start in time."
+            exit 1
+          fi
+      - name: Load database schema and seed data
+        run: |
+          echo "Loading schema and seed data..."
+          mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < QATests/db/sql/schema.sql
+          mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < QATests/db/sql/seed_data.sql
+
       # Step 6: Run tests
       - name: Run pytest tests
         run: |

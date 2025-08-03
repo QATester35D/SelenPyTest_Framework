@@ -77,8 +77,8 @@ jobs:
       - name: Load database schema and seed data
         run: |
           echo "Loading schema and seed data..."
-          mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < QATests/db/sql/schema.sql
-          mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < QATests/db/sql/seed_data.sql
+          mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < QATests/db/schema.sql
+          mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < QATests/db/seed_data.sql
 
       # Step 6: Run tests
       - name: Run pytest tests

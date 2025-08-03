@@ -9,6 +9,12 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:  # ← this makes env vars available to all steps
+      DB_HOST: ${{ secrets.CI_DB_HOST }}
+      DB_PORT: ${{ secrets.CI_DB_PORT }}
+      DB_USER: ${{ secrets.CI_DB_USER }}
+      DB_PASSWORD: ${{ secrets.CI_DB_PASSWORD }}
+      DB_NAME: ${{ secrets.CI_DB_NAME }}
 
     services:
       mysql:
@@ -52,12 +58,12 @@ jobs:
 
       # Step 6: 
       - name: Load environment variables and Wait for MySQL to be ready
-        env:
-          DB_HOST: ${{ secrets.CI_DB_HOST }}
-          DB_PORT: ${{ secrets.CI_DB_PORT }}
-          DB_USER: ${{ secrets.CI_DB_USER }}
-          DB_PASSWORD: ${{ secrets.CI_DB_PASSWORD }}
-          DB_NAME: ${{ secrets.CI_DB_NAME }}
+        # env:
+        #   DB_HOST: ${{ secrets.CI_DB_HOST }}
+        #   DB_PORT: ${{ secrets.CI_DB_PORT }}
+        #   DB_USER: ${{ secrets.CI_DB_USER }}
+        #   DB_PASSWORD: ${{ secrets.CI_DB_PASSWORD }}
+        #   DB_NAME: ${{ secrets.CI_DB_NAME }}
         run: |
           echo "Waiting for MySQL to be ready..."
           for i in {1..40}; do

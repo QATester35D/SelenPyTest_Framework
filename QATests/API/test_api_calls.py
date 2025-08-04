@@ -25,6 +25,8 @@ class TestAPIGetCall:
         assert response.status_code == 200, "Status code is not 200"
 
     def test_post_api_call(self):
+        emailCounter=TestAPIGetCall.increment_get_address_name_counter()
+        emailAddress=TestAPIGetCall.create_email_with_counter(emailCounter) #"asitest124@gmail.com"
         head = {
             'Content-Type':'application/json',
             'Authorization':'Bearer 12143133a105c96f203540fa1b2f5c61a1e15f09cfde2c34d449a9c96dbe8c32'
@@ -32,7 +34,7 @@ class TestAPIGetCall:
         # Each time I run this I have to update/change the email address to avoid duplicates
         body = {
             "name": "Shawn 120",
-            "email": "asitest122@gmail.com",
+            "email": emailAddress,
             "gender": "male",
             "status": "active"
         }
@@ -87,3 +89,19 @@ class TestAPIGetCall:
         print(response.status_code)
         print(response.text)
         assert response.status_code == 200, "Status code is not 200"
+
+##### Helpers
+    def increment_get_address_name_counter():
+        filename = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "addressNameCounter.txt"))
+        file = open(filename, 'r+')
+        ctr = file.read().strip()
+        new_ctr = int(ctr) + 1
+        file.seek(0)
+        file.write(str(new_ctr))
+        file.close()
+        return ctr
+    
+    def create_email_with_counter(nameCounter):
+        #asitest124@gmail.com
+        email='asitest'+nameCounter+'@gmail.com'
+        return email

@@ -61,16 +61,17 @@ class TestAPIGetCall:
     def test_post_demo(self):
         base_url = 'https://reqres.in/'
         headers_test = {
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'x-api-key':'reqres-free-v1'
         }
 
         json_file = os.path.join(os.path.dirname(__file__), "../data/users.json")
         with open(json_file, "r", encoding="utf-8") as file:
             json_payload = json.load(file)
         # Use json=payload when passing json data
-        response = requests.post(url=base_url+'api/users', headers=headers_test, json=json_payload)
+        # response = requests.post(url=base_url+'api/users', headers=headers_test, json=json_payload)
         # Some people use data instead of json if they are passing csv
-        # response = requests.post(url=base_url+'api/users', headers=headers_test, data=json.dumps(json_payload))
+        response = requests.post(url=base_url+'api/users', headers=headers_test, data=json.dumps(json_payload))
         print(response.status_code)
         print(response.text)
         # print(response.json())

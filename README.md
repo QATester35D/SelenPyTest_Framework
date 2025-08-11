@@ -1,58 +1,110 @@
-This project implements a Test Automation Framework that uses selenium, python and pytest using a page object model approach to test several web based applications, has a setup and teardown process of seeding data in a MySQL database and resetting the database after each test so that each test has a fresh seeded dataset to work with. It demonstrates data-driven testing for some of the tests, and also performs some API testing and utilizes Webhooks and API calls for reporting into Slack. The test automation approach utilizes code/method reuse and helper methods.
+SelenPyTest Framework
+A robust Selenium-based Test Automation Framework implemented in Python using pytest and the Page Object Model (POM) design pattern.
+This framework supports UI testing, API testing, database integration, and continuous integration with Jenkins, while incorporating custom assertion handling, data-driven testing, and automated test reporting.
 
-The tests can also be run from Jenkins CI/CD.
+📌 Features
+- Page Object Model (POM) for modular, maintainable UI automation
+- Selenium WebDriver for browser-based functional testing
+- pytest for test discovery, execution, and reporting
+- MySQL Database Integration with automated setup, teardown, and seeded test data
+- Data-Driven Testing using JSON, CSV, and other formats
+- API Testing (CRUD operations) with integrated Slack API/Webhooks for real-time notifications
+- Custom Assertions with pass/fail logging and requirement traceability
+- Jenkins CI/CD support for scheduled or on-demand test runs
+- GitHub Actions CI/CD support for automatic test runs upon check-ins
+- Allure Reports and pytest-html for rich test result visualization
 
-The main public websites used in testing are:
-- "https://ecommerce-playground.lambdatest.io/index.php?route=account/login" (this site limits automation capabilities when running from a test agent or Jenkins CI)
-- "https://www.selenium.dev/selenium/web/formPage.html" (this is a site created by Selenium)
+🗂 Project Structure
 
-API coding & testing: several sites are used including Slack. Most API sites either restrict you from performing Post or Put calls since those calls are updating the remote host or they implement a mock stub so the data isn't really updated there so you can't execute a Get after a Post to validate that the data was successfully updated like you would in normal testing. The Post or Put will execute and return a 200 response but the data doesn't get updated. Due to this I created a Slack workspace and implemented some Slack notifications using the Slack API and Webhooks since I can then actually do posts to the Slack workspace to simulate notifications.
+SelenPyTest_Framework/
+│
+├── pytest.ini                # Global pytest configuration
+├── conftest.py                # Global fixtures, setup/teardown logic
+│
+├── assertions/                # Custom assertion handlers
+├── helpers/                   # Helper functions & reusable utilities
+├── utilities/
+│   ├── locators.py            # Centralized object repository
+│   └── test_data.py           # Global test data definitions
+│
+├── api_client.py              # Centralized API CRUD methods
+├── API/                       # API test cases
+│
+├── pages/                     # Page Object Model classes
+├── db/                        # DB connections, schema, and seed logic
+├── data/                      # External data files for data-driven tests
+│   ├── users.json
+│   └── ...
+│
+├── tests/                     # Main pytest test suites (grouped by feature)
+├── DemoPytest_NoPOM/           # Example tests without POM
+│
+├── AllureReport/              # Allure report output
+├── AutomationPyTestReport.html# HTML test report output
 
-Database testing is done with a MySQL database locally. This is used to demonstrate interacting with a database using SQL commands and implementing a Setup and Teardown as part of the the test automation process.
+🔍 Key Components
+- pytest.ini – Defines global pytest settings, markers, and execution options
+- conftest.py – Global fixtures and setup/teardown logic
+- assertions/ – Custom assertions that log pass/fail outcomes without halting execution unless critical
+- helpers/ – Utility methods for site interactions and assertion handling
+- utilities/locators.py – Centralized locators for all POM classes
+- api_client.py – CRUD methods for interacting with APIs
+- db/ – Database connection handling, schema loading, and test data seeding
+- data/ – JSON/CSV/other data files for parameterized tests
+- pages/ – Page classes encapsulating locators and actions for specific application pages
+- API/ – API test cases demonstrating GET, POST, PUT, DELETE operations
+- DemoPytest_NoPOM/ – Standalone pytest/Selenium examples without the POM pattern
 
-The Test Automation Framework being implemented consists of these key components:
+🌐 Target Applications
+The framework includes tests against:
+- E-commerce Playground
+https://ecommerce-playground.lambdatest.io/index.php?route=account/login
+(Some automation features limited in CI environments)
+- Selenium Form Page
+https://www.selenium.dev/selenium/web/formPage.html
+- Slack API & Webhooks for notification and integration testing
 
-'pytest.ini' - Test Configuration File
-- Used to configure global settings for how pytest discovers, organizes, and executes tests across the entire framework.
-- It defines the markers being used.
-- It defines aspects of the test execution.
+🛠 Setup & Installation
+1. Clone the repository
+git clone https://github.com/QATester35D/SelenPyTest_Framework.git
+cd SelenPyTest_Framework
 
-'conftest.py' - Configuration File
-- Used to define some global fixtures
-- Contains Setup/Teardown logic
+2. Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
 
-'assertions' folder: This is for my custom assertion approach. A normal assert won't log anything when the assert passes and will terminate execution if there is a failure. I implemented an assertion approach to log both pass and fail results, requirement IDs, description and continue testing. If there is a validation that should fail the test execution, then a regular assert statement will be used.
+3. Install dependencies
+pip install -r requirements.txt
 
-'helpers' folder: 
-- contains helper files for the various sites that includes methods to help with common processes and simplify test code.
-- contains files for handling the custom assertions
+4. Configure environment variables
+(e.g., database credentials, Slack webhook URL)
 
-'utilities' folder:
-'locators.py' – Centralized Object Repository
-- This file serves as the object repository for the test framework. It contains the element locators (e.g., 'By.ID', 'By.XPATH', 'By.CSS_SELECTOR') used by the page object classes to identify and interact with UI elements across the application under test.
-- Each locator is typically defined as a class attribute, grouped logically by page or feature, to promote maintainability, reusability, and readability of test code. This allows tests and page objects to reference elements consistently without hardcoding XPaths or selectors in multiple files. This separation also makes it easier to update locators when the UI changes.
+▶️ Running Tests
+- Run all tests
+pytest
 
-'test_data.py' - a file containing some defined test data to be used globally.
+- Run with HTML report
+pytest --html=AutomationPyTestReport.html
 
-'api_client.py' - centralized CRUD methods for API calls to code.
+- Run with Allure Report
+pytest --alluredir=AllureReport
+allure serve AllureReport
 
-'pages' folder - this contains files for various functionality on the website that help to reduce code. It primarily consists of methods to simplify identifying objects in code.
+- Run specific test file
+pytest tests/test_form_page.py
 
-'db' folder:
-- This contains database connections, database setup logic and various methods to be used against the database.
+📊 Reporting
+- pytest-html – Generates AutomationPyTestReport.html
+- Allure Reports – Interactive, visual test reporting
+- Slack Notifications – Optional integration for posting results to Slack channels
 
-'tests' folder:
-- This contains test files that contain tests within them to test the various features of the website, grouped by functionality.
-- There are also methods created to simplify code and reusability.
+🚀 CI/CD Integration
+This framework is Jenkins-ready and setup in GitHub Actions:
+- Configure a Jenkins pipeline
+- Install necessary plugins (Allure Jenkins Plugin, HTML Publisher Plugin)
+- Trigger tests on commit, schedule, or manually
+- This GitHub repository has GitHub Actions setup to run syntax checks, builds and run tests.
 
-'API' folder: contains some tests to demonstrate executing the various CRUD processes (post, get, put, delete) for API calls in addition to capturing information returned from a call that can be used as a parameter into another API call.
-
-'data' folder: this contains various data files in different formats. These are used in data driven testing to show the different approaches that can be used.
-- users.json is used in one of the API tests.
-- the other data files are used primarily in the data driven tests contained in the "DemoPytest_NoPOM" folder. 
-
-'DemoPytest_NoPOM' folder: this folder contains various test files that perform various tests showing different capabilities of selenium, python and pytest but without the page object model applied.
-
-'AllureReport' folder: used for generating a test results report using Allure Reports.
-
-'AutomationPyTestReport.html' - is a test results report that uses pytest-html for a standard looking test results report in html format.
+📜 License
+This project is licensed under the MIT License.

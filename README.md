@@ -17,30 +17,22 @@ This framework supports UI testing, API testing, database integration, and conti
 🗂 Project Structure
 
 SelenPyTest_Framework/
-│
-├── pytest.ini                # Global pytest configuration
-├── conftest.py                # Global fixtures, setup/teardown logic
-│
-├── assertions/                # Custom assertion handlers
-├── helpers/                   # Helper functions & reusable utilities
-├── utilities/
-│   ├── locators.py            # Centralized object repository
-│   └── test_data.py           # Global test data definitions
-│
-├── api_client.py              # Centralized API CRUD methods
-├── API/                       # API test cases
-│
-├── pages/                     # Page Object Model classes
-├── db/                        # DB connections, schema, and seed logic
-├── data/                      # External data files for data-driven tests
-│   ├── users.json
-│   └── ...
-│
-├── tests/                     # Main pytest test suites (grouped by feature)
-├── DemoPytest_NoPOM/           # Example tests without POM
-│
-├── AllureReport/              # Allure report output
-├── AutomationPyTestReport.html# HTML test report output
+pytest.ini                   # Global pytest configuration
+conftest.py                  # Global fixtures, setup/teardown logic
+assertions folder            # Custom assertion handlers
+helpers folder               # Helper functions & reusable utilities
+utilities folder
+ - locators.py               # Centralized object repository
+ - test_data.py              # Global test data definitions
+ - api_client.py             # Centralized API CRUD methods
+API folder                   # API test cases
+pages folder                 # Page Object Model classes
+db folder                    # DB connections, schema, and seed logic
+data folder                  # External data files for data-driven tests
+tests folder                 # Main pytest test suites (grouped by feature)
+DemoPytest_NoPOM  folder     # Example tests without POM
+AllureReport folder          # Allure report output
+AutomationPyTestReport.html  # HTML test report output
 
 🔍 Key Components
 - pytest.ini – Defines global pytest settings, markers, and execution options

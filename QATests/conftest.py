@@ -69,26 +69,6 @@ def initialize_driver(request):
     print("Close Browser")
     driver.quit()
 
-# # === Browser Fixture === Original approach
-# @pytest.fixture(params=["chrome", "firefox", "edge"])
-# def initialize_driver(request):
-#     match request.param:
-#         case "chrome":
-#             driver = webdriver.Chrome()
-#         case "firefox":
-#             driver = webdriver.Firefox()
-#         # case "edge":
-#         #     driver = webdriver.Edge()
-#     request.cls.driver = driver
-#     print("Browser: ", request.param)
-#     # driver.get(TestData.url)
-#     # driver.maximize_window()
-
-#     yield driver # Run tests
-
-#     print("Close Browser")
-#     driver.quit()
-
 # Automatically enable caplog logging for all tests
 @pytest.fixture(autouse=True)
 def enable_caplog(caplog):

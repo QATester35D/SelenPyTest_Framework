@@ -1,10 +1,3 @@
-# DB_CONFIG = {
-#     "host": "localhost",
-#     "user": "root",
-#     "password": "root",
-#     "database": "test_automation_db"
-# }
-
 #Updated for functionality to work in my CI also
 import os
 

@@ -3,7 +3,6 @@ import json
 import requests
 import pytest
 from QATests.tests.base_test import BaseTest
-import time
 
 class TestAPIGetCall:
 
@@ -74,17 +73,21 @@ class TestAPIGetCall:
         # response = requests.post(url=base_url+'api/users', headers=headers_test, json=json_payload)
         # Some people use data instead of json if they are passing csv
         response = requests.post(url=base_url+'api/users', headers=headers_test, data=json.dumps(json_payload))
+        elapsed_time=response.elapsed
+        response_time_seconds = elapsed_time.total_seconds()
+        assert response_time_seconds < 1, f"The API call took more than 1 second to execute; it took {response_time_seconds}"
+        print(f"Response time: {response_time_seconds:.4f} seconds.")
         print(response.status_code)
         print(response.text)
         # print(response.json())
-
         assert response.status_code == 201, "Status code is not 201"
 
     def test_get_reqres_demo_(self):
-        header = {
-            'Content-Type':'application/json'
-        }
         base_url = 'https://reqres.in/'
+        header = {
+           'Content-Type':'application/json',
+           'x-api-key':'reqres-free-v1'
+        }
         response = requests.get(url=str(base_url+'api/users/2'), headers=header)
         print(response.status_code)
         print(response.text)

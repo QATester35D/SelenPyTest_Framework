@@ -2,7 +2,7 @@ import softest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-class AssertionsTest(softest.TestCase):
+class TestAssertionsSoft(softest.TestCase):
     pass
 
     def test_Lambdatest_radio_button_demo_value(self):

@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 class TestAssertionsHard():
     pass
 
-    def test_Lambdatest_radio_button_demo_value():
+    def test_Lambdatest_radio_button_demo_value(self):
         driver = webdriver.Firefox()
         driver.maximize_window()
         driver.get("https://www.lambdatest.com/selenium-playground/radiobutton-demo")

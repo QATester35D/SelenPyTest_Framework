@@ -86,7 +86,11 @@ jobs:
           mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < QATests/db/schema.sql
           mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < QATests/db/seed_data.sql
 
-      # Step 6: Run tests
+      # Step 6: Terminate lingering browser processes
+      - name: Terminate lingering browser processes
+        run: killall chrome || true
+
+      # Step 7: Run tests
       - name: Run pytest tests
         run: |
           pytest QATests --maxfail=1 --disable-warnings -v

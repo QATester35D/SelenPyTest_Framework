@@ -20,3 +20,13 @@ class ReqresService:
         endpoint = f'/api/users?{name},{job}'
         url = self.base_url + endpoint
         return requests.post(url=url, headers=self.headers)
+    
+    def put_update_user(self,id,name,job):
+        endpoint = f'/api/users/{id}?{name},{job}'
+        url = self.base_url + endpoint
+        return requests.put(url=url, headers=self.headers)
+    
+    def delete_user(self,id):
+        endpoint = f'/api/users/{id}'
+        url = self.base_url + endpoint
+        return requests.delete(url=url, headers=self.headers)

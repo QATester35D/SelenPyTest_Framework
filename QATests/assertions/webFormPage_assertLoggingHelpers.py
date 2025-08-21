@@ -65,6 +65,19 @@ class AssertHelper:
             raise AssertionError(f"❌ [{requirement_id}] {fail_text}")
 
     @staticmethod
+    def lessThanOrEqual(actual, expected, requirement_id, description, fail_message=None, soft=None):
+        tracker = AssertTracker()
+        passed = actual <= expected
+        tracker.log_assert(passed, requirement_id, description, actual, expected)
+
+        # Use global setting if soft is not explicitly provided
+        effective_soft = _USE_SOFT_ASSERTS if soft is None else soft
+
+        if not passed and not effective_soft:
+            fail_text = fail_message or f"{description} | Expected: {expected}, Got: {actual}"
+            raise AssertionError(f"❌ [{requirement_id}] {fail_text}")
+
+    @staticmethod
     def true(condition, requirement_id, description, fail_message=None, soft=None):
         tracker = AssertTracker()
         passed = bool(condition)

@@ -47,7 +47,7 @@ def pytest_metadata(metadata):
     metadata['Tester'] = "Shawn LoPorto"
 
 # === Browser Fixture === New approach specifying from Jenkinsfile
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def initialize_driver(request):
     browser = request.config.getoption("--browser").lower()
 

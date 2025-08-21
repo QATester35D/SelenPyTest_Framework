@@ -6,6 +6,9 @@ from QATests.helpers.login_helpers import perform_standard_login
 from QATests.utilities.locators import LoginPageLocatorFields, AddressLocatorFields
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import logging
+
+logger = logging.getLogger(__name__)
 
 #This is for the website: https://ecommerce-playground.lambdatest.io/index.php?route=account/login
 
@@ -39,9 +42,12 @@ class TestLogin(BaseTest):
         actual_title=login_page.get_title()
         assert actual_title == "My Account"
 
-    def test_invalid_credentials(self):
+    def test_invalid_credentials(self, assert_helper):
+        expected_message="Warning: No match for E-Mail Address and/or Password."
         self.driver.get(LambdaTestSiteTestData.url)
         login_page=LoginPage(self.driver)
         login_page.log_into_application("Invalid Email", "Invalid Password")
         actual_message = login_page.get_warning_message()
         assert actual_message.__contains__("Warning")
+        assert_helper.equal(actual_message,expected_message,f"Checking the invalid message. Actual message was {actual_message}. Expected message was: {expected_message}", assert_helper)
+

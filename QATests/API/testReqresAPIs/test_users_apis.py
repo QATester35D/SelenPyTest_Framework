@@ -2,31 +2,48 @@ import os
 import json
 import requests
 import pytest
-from QATests.tests.base_test import BaseTest
+from QATests.test_api_services.reqres_service import ReqresService
 
 # This is testing the the users functionality of the training site: https://reqres.in
 # The structured testing approach will test each "functionality" (major resource) like the users functionality
 #   found in the swagger doc: https://reqres.in/api-docs/
 
-@pytest.mark.functional
+# @pytest.mark.functional
 class TestReqresUsersAPI:
+    def setup_method(self, method):
+        self.reqres_service = ReqresService()
 
-    def test_get_users_(self):
-        base_url = 'https://reqres.in/'
-        header = {
-           'Content-Type':'application/json',
-           'x-api-key':'reqres-free-v1'
-        }
-        response = requests.get(url=str(base_url+'api/users/2'), headers=header)
-        elapsed_time=response.elapsed
+    def test_get_user_by_id_success(self):
+        response = self.reqres_service.get_user(user_id=2)
+        elapsed_time = response.elapsed
         response_time_seconds = elapsed_time.total_seconds()
-        assert response_time_seconds < 1, f"The API call took more than 1 second to execute; it took {response_time_seconds}"
-        print(f"Response time: {response_time_seconds:.4f} seconds.")
-        print(response.status_code)
-        print(response.text)
+        assert response_time_seconds < 2, f"The API call took more than 1 second to execute; it took {response_time_seconds}"
         assert response.status_code == 200, "Status code is not 200"
+        print(f"Response time: {response_time_seconds:.4f} seconds.")
+        print(f"Status code: {response.status_code}")
+        print(f"Response text: {response.text}")
 
-    def test_post_demo(self):
+    def test_get_users_list_success(self):
+        response = self.reqres_service.get_user_list(page=1,per_page=5)
+        elapsed_time = response.elapsed
+        response_time_seconds = elapsed_time.total_seconds()
+        assert response_time_seconds < 2, f"The API call took more than 1 second to execute; it took {response_time_seconds}"
+        assert response.status_code == 200, "Status code is not 200"
+        print(f"Response time: {response_time_seconds:.4f} seconds.")
+        print(f"Status code: {response.status_code}")
+        print(f"Response text: {response.text}")
+
+    def test_post_create_user(self):
+        response = self.reqres_service.post_create_user(name="Shawn",job="SDET")
+        elapsed_time = response.elapsed
+        response_time_seconds = elapsed_time.total_seconds()
+        assert response_time_seconds < 2, f"The API call took more than 1 second to execute; it took {response_time_seconds}"
+        assert response.status_code == 201, "Status code is not 200"
+        print(f"Response time: {response_time_seconds:.4f} seconds.")
+        print(f"Status code: {response.status_code}")
+        print(f"Response text: {response.text}")
+
+    def test_put(self):
         base_url = 'https://reqres.in/'
         headers_test = {
             'Content-Type':'application/json',

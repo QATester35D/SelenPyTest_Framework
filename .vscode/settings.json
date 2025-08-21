@@ -3,6 +3,7 @@
     "python.testing.pytestArgs": [
         "QATests/tests",
         "QATests/API",
+        "QATests/TestDemoPytest_NoPOM",
         "--browser=chrome"
     ],
     "python.testing.unittestEnabled": false,

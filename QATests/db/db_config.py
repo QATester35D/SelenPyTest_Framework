@@ -8,3 +8,11 @@ DB_CONFIG = {
     "database": os.getenv("DB_NAME", "testdb"),
     "port": int(os.getenv("DB_PORT", 3306))
 }
+
+DB_CONFIG_SAKILA = {
+    "host": os.getenv("DB_HOST", "localhost"),
+    "user": os.getenv("DB_USER", "root"),
+    "password": os.getenv("DB_PASSWORD", "root"),
+    "database": os.getenv("DB_NAME", "sakila"),
+    "port": int(os.getenv("DB_PORT", 3306))
+}

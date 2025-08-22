@@ -3,6 +3,7 @@
     "python.testing.pytestArgs": [
         "QATests/tests",
         "QATests/API",
+        "QATests/db",
         "QATests/TestDemoPytest_NoPOM",
         "--browser=chrome"
     ],

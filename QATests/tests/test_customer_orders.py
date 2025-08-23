@@ -1,7 +1,7 @@
 import mysql.connector
 from QATests.db.db_config import DB_CONFIG_SAKILA
 
-class SakilaDatabaseOperations:
+class TestSakilaDatabaseOperations:
     def __init__(self):
         self.mydb = mysql.connector.connect(**DB_CONFIG_SAKILA)
         self.cur = self.mydb.cursor()
